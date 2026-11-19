@@ -1,0 +1,23 @@
+{
+  "name": "ProductivityAgent",
+  "version": 2,
+  "managedBy": "CDK",
+  "tags": {
+    "Project": "barclays"
+  },
+  "runtimes": [
+    {
+      "name": "agent",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/agent",
+      "runtimeVersion": "PYTHON_3_13",
+      "envVars": [
+        { "name": "MODEL_ID", "value": "apac.amazon.nova-lite-v1:0" },
+        { "name": "MAX_TOKENS", "value": "1024" },
+        { "name": "AGENT_TIMEZONE", "value": "UTC" },
+        { "name": "LOG_LEVEL", "value": "INFO" }
+      ]
+    }
+  ]
+}

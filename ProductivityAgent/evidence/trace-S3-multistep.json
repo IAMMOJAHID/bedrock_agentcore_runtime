@@ -1,0 +1,1417 @@
+[
+  {
+    "@timestamp": "2026-11-18 15:51:52.422",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.44.0",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "aws.log.stream.names": "otel-rt-logs",
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "cloud.provider": "aws",
+          "cloud.region": "ap-south-1",
+          "telemetry.auto.version": "0.21.0-aws",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.service.type": "gen_ai_agent"
+        }
+      },
+      "scope": {
+        "name": "productivity_agent.main"
+      },
+      "timeUnixNano": 1795017112422610400,
+      "observedTimeUnixNano": 1795017112422774000,
+      "severityNumber": 9,
+      "severityText": "INFO",
+      "body": "invoke session=demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2 model=apac.amazon.nova-lite-v1:0 prompt='Create a task for reviewing the AgentCore architecture due next Monday and then show me all my pending tasks.'",
+      "attributes": {
+        "otelSpanID": "1aec146d41871bde",
+        "otelTraceID": "6afdc99844cc152a5f43cfcd61381d45",
+        "otelTraceSampled": true,
+        "otelServiceName": "ProductivityAgent_default_agent.DEFAULT",
+        "code.file.path": "/var/task/main.py",
+        "code.function.name": "invoke",
+        "code.line.number": 64
+      },
+      "flags": 1,
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "1aec146d41871bde"
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExMh8xNzk1MDE3MTEyNzIwHzEzNjgzNzIzNDc0NjA4MTE4NR8wHzE3OTUwMTcxMTI0MjI="
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.071",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "opentelemetry.instrumentation.aiohttp_client",
+        "version": "0.65b0"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "09e7b179c34b3b20",
+      "parentSpanId": "8e180f04c64e6fe6",
+      "flags": 256,
+      "name": "POST",
+      "kind": "CLIENT",
+      "startTimeUnixNano": 1795017112446646500,
+      "endTimeUnixNano": 1795017113071415600,
+      "durationNano": 624769009,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "telemetry.extended": "true",
+        "http.url": "https://bedrock-runtime.ap-south-1.amazonaws.com/model/apac.amazon.nova-lite-v1%3A0/converse",
+        "aws.remote.service": "bedrock-runtime.ap-south-1.amazonaws.com",
+        "aws.local.environment": "bedrock-agentcore:default",
+        "aws.remote.operation": "POST /model",
+        "http.status_code": 200,
+        "aws.local.operation": "UnmappedOperation",
+        "aws.span.kind": "CLIENT",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "http.method": "POST",
+        "http.response.status_code": 200,
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2"
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfMB8xNzk1MDE3MTEzMDcx"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.074",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "8e180f04c64e6fe6",
+      "parentSpanId": "674de725ba37d6d2",
+      "flags": 256,
+      "name": "generate_content bedrock/converse/apac.amazon.nova-lite-v1:0",
+      "kind": "INTERNAL",
+      "startTimeUnixNano": 1795017112440158000,
+      "endTimeUnixNano": 1795017113074349800,
+      "durationNano": 634191840,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "gen_ai.usage.output_tokens": 62,
+        "gen_ai.agent.name": "productivity_assistant",
+        "gcp.vertex.agent.invocation_id": "e-788f31f9-d9be-4096-90ee-8a61481e9a51",
+        "aws.genai.span_kind": "LLM",
+        "gen_ai.provider.name": "bedrock",
+        "aws.local.environment": "bedrock-agentcore:default",
+        "gcp.vertex.agent.event_id": "cebdbd91-4224-44db-8140-5ee92a450ee9",
+        "gen_ai.operation.name": "generate_content",
+        "gen_ai.usage.input_tokens": 2025,
+        "aws.genai.token_count_total": 2087,
+        "gen_ai.response.finish_reasons": [
+          "stop"
+        ],
+        "gen_ai.request.model": "bedrock/converse/apac.amazon.nova-lite-v1:0",
+        "gen_ai.conversation.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "gen_ai.usage.cache_creation.input_tokens": 0,
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "gen_ai.tool.definitions": "[{\"name\":\"create_task\",\"description\":\"Create a new task with a title and a due date.\\n\\nArgs:\\n    title: Short description of the task, e.g. \\\"Complete the architecture review\\\".\\n    due_date: Due date in ISO format YYYY-MM-DD. Convert relative dates such as\\n        \\\"Friday\\\" or \\\"tomorrow\\\" to an absolute date before calling.\\n    user_due_date_phrase: The due-date words exactly as the USER wrote them,\\n        e.g. \\\"Friday\\\", \\\"next Monday\\\", \\\"2026-11-25\\\". Never make this up; if the\\n        user gave no due date, do not call this tool - ask them instead.\\n\\nReturns:\\n    On success: {\\\"status\\\": \\\"success\\\", \\\"task\\\": {...}} including the new task_id.\\n    On failure: {\\\"status\\\": \\\"error\\\", \\\"error_type\\\": ..., \\\"message\\\": ...}.\",\"parameters\":null,\"type\":\"function\"},{\"name\":\"list_tasks\",\"description\":\"List tasks, filtered by status.\\n\\nArgs:\\n    status: Which tasks to return: \\\"pending\\\" (default for \\\"my tasks\\\"),\\n        \\\"completed\\\", or \\\"all\\\".\\n\\nReturns:\\n    On success: {\\\"status\\\": \\\"success\\\", \\\"filter\\\": ..., \\\"count\\\": N, \\\"tasks\\\": [...]}.\\n    On failure: {\\\"status\\\": \\\"error\\\", \\\"error_type\\\": ..., \\\"message\\\": ...}.\",\"parameters\":null,\"type\":\"function\"},{\"name\":\"complete_task\",\"description\":\"Mark an existing task as completed.\\n\\nArgs:\\n    task_id: The task identifier, e.g. \\\"TASK-001\\\".\\n\\nReturns:\\n    On success: {\\\"status\\\": \\\"success\\\", \\\"task\\\": {...}} with status \\\"completed\\\".\\n    On failure: {\\\"status\\\": \\\"error\\\", \\\"error_type\\\": \\\"not_found\\\" | \\\"validation_error\\\", ...}.\",\"parameters\":null,\"type\":\"function\"}]",
+        "gen_ai.usage.cache_read.input_tokens": 0
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfMR8xNzk1MDE3MTEzMDc0"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.074",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.44.0",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "aws.log.stream.names": "otel-rt-logs",
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "cloud.provider": "aws",
+          "cloud.region": "ap-south-1",
+          "telemetry.auto.version": "0.21.0-aws",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.service.type": "gen_ai_agent"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1",
+        "schemaUrl": "https://opentelemetry.io/schemas/1.36.0"
+      },
+      "timeUnixNano": 0,
+      "observedTimeUnixNano": 1795017113074116900,
+      "severityNumber": 0,
+      "severityText": "",
+      "attributes": {
+        "gen_ai.agent.name": "productivity_assistant",
+        "gen_ai.conversation.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "gcp.vertex.agent.event_id": "cebdbd91-4224-44db-8140-5ee92a450ee9",
+        "gcp.vertex.agent.invocation_id": "e-788f31f9-d9be-4096-90ee-8a61481e9a51",
+        "gen_ai.provider.name": "bedrock",
+        "user.id": "demo-user",
+        "gen_ai.response.finish_reasons": [
+          "stop"
+        ],
+        "gen_ai.usage.input_tokens": 2025,
+        "gen_ai.usage.output_tokens": 62,
+        "gen_ai.usage.cache_read.input_tokens": 0,
+        "gen_ai.usage.cache_creation.input_tokens": 0,
+        "gen_ai.input.messages": [
+          {
+            "role": "user",
+            "parts": [
+              {
+                "content": "Create a task to complete the architecture review by Friday.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "content": "The user has provided a title for the task but has not provided a due date. The user mentioned \"by Friday\", which needs to be converted to an absolute date before creating the task.",
+                "type": "text"
+              },
+              {
+                "content": "\n",
+                "type": "text"
+              },
+              {
+                "id": "tooluse_cUSCQY16Jsnqq4XTBx4lXk",
+                "name": "create_task",
+                "arguments": {
+                  "due_date": "2026-11-20",
+                  "title": "Complete the architecture review",
+                  "user_due_date_phrase": "by Friday"
+                },
+                "type": "tool_call"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "id": "tooluse_cUSCQY16Jsnqq4XTBx4lXk",
+                "response": {
+                  "status": "success",
+                  "message": "Task TASK-001 created.",
+                  "task": {
+                    "task_id": "TASK-001",
+                    "title": "Complete the architecture review",
+                    "due_date": "2026-11-20",
+                    "status": "pending",
+                    "created_at": "2026-11-18T15:51:42+00:00",
+                    "completed_at": null
+                  },
+                  "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."
+                },
+                "type": "tool_call_response"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "content": " The task to complete the architecture review by Friday has been successfully created. ",
+                "type": "text"
+              },
+              {
+                "content": "\nThe task \"Complete the architecture review\" has been created and is due by Friday, 2026-11-20.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "content": "Show me all my pending tasks.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "id": "tooluse_BSAh7zuiHYSp913LT2bMDJ",
+                "name": "list_tasks",
+                "arguments": {
+                  "status": "pending"
+                },
+                "type": "tool_call"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "id": "tooluse_BSAh7zuiHYSp913LT2bMDJ",
+                "response": {
+                  "status": "success",
+                  "filter": "pending",
+                  "count": 1,
+                  "tasks": [
+                    {
+                      "task_id": "TASK-001",
+                      "title": "Complete the architecture review",
+                      "due_date": "2026-11-20",
+                      "status": "pending",
+                      "created_at": "2026-11-18T15:51:42+00:00",
+                      "completed_at": null
+                    }
+                  ]
+                },
+                "type": "tool_call_response"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "content": "Here are your pending tasks:\n\n- **TASK-001**: Complete the architecture review, due by Friday, 2026-11-20.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "content": "Create a task for reviewing the AgentCore architecture due next Monday and then show me all my pending tasks.",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "gen_ai.system_instructions": [
+          {
+            "content": "You are a Personal Productivity Assistant that manages the user's tasks.\n\nTools:\n- create_task(title, due_date, user_due_date_phrase): create a task.\n  due_date MUST be YYYY-MM-DD; user_due_date_phrase is the date words the user typed.\n- list_tasks(status): list tasks; status is \"pending\", \"completed\" or \"all\".\n- complete_task(task_id): mark a task as completed, e.g. \"TASK-001\".\n\nHow to work:\n1. Work out EVERY operation the user is asking for and call one tool per\n   operation, in order. Requests joined by \"and\", \"then\" or \"also\" need\n   several tool calls in the same turn. Example: \"create X and show my tasks\"\n   = call create_task, then call list_tasks.\n2. Whenever you show tasks to the user, you MUST call list_tasks in this turn\n   and show exactly what it returned. Never build a task list from memory or\n   from earlier messages - tasks may have changed.\n3. Convert relative dates (\"Friday\", \"tomorrow\", \"next Monday\", \"end of week\")\n   to an absolute YYYY-MM-DD date using the calendar below. \"By <weekday>\"\n   means the next occurrence of that weekday (today counts if it is that day).\n4. If the user has not given a task title or a due date, do NOT call\n   create_task: ask for the missing detail. Never invent or assume a due date.\n5. Use the conversation history: \"that task\", \"the first one\" or \"it\" refer to\n   tasks mentioned earlier in this session.\n6. Base every statement about tasks ONLY on tool results from this turn or\n   earlier turns. Never invent task IDs, titles, dates or statuses.\n7. If a tool returns \"status\": \"error\", tell the user plainly that the\n   operation failed and why (use the message). Never say an operation\n   succeeded unless its tool returned \"status\": \"success\". If one step of a\n   multi-step request fails, report which steps succeeded and which failed.\n8. Present task lists clearly: ID, title, due date, status. Keep replies concise.\n\nToday is Wednesday, 2026-11-18 (timezone UTC).\nCalendar for the next days:\n- Wednesday: 2026-11-18 (today)\n- Thursday: 2026-11-19\n- Friday: 2026-11-20\n- Saturday: 2026-11-21\n- Sunday: 2026-11-22\n- Monday: 2026-11-23\n- Tuesday: 2026-11-24\n- Wednesday: 2026-11-25\n\n\nYou are an agent. Your internal name is \"productivity_assistant\". The description about you is \"Manages the user's tasks: create, list and complete.\".",
+            "type": "text"
+          }
+        ],
+        "gen_ai.tool.definitions": [
+          {
+            "name": "create_task",
+            "description": "Create a new task with a title and a due date.\n\nArgs:\n    title: Short description of the task, e.g. \"Complete the architecture review\".\n    due_date: Due date in ISO format YYYY-MM-DD. Convert relative dates such as\n        \"Friday\" or \"tomorrow\" to an absolute date before calling.\n    user_due_date_phrase: The due-date words exactly as the USER wrote them,\n        e.g. \"Friday\", \"next Monday\", \"2026-11-25\". Never make this up; if the\n        user gave no due date, do not call this tool - ask them instead.\n\nReturns:\n    On success: {\"status\": \"success\", \"task\": {...}} including the new task_id.\n    On failure: {\"status\": \"error\", \"error_type\": ..., \"message\": ...}.",
+            "parameters": {
+              "properties": {
+                "title": {
+                  "title": "Title",
+                  "type": "string"
+                },
+                "due_date": {
+                  "title": "Due Date",
+                  "type": "string"
+                },
+                "user_due_date_phrase": {
+                  "title": "User Due Date Phrase",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "due_date",
+                "user_due_date_phrase"
+              ],
+              "title": "create_taskParams",
+              "type": "object"
+            },
+            "type": "function"
+          },
+          {
+            "name": "list_tasks",
+            "description": "List tasks, filtered by status.\n\nArgs:\n    status: Which tasks to return: \"pending\" (default for \"my tasks\"),\n        \"completed\", or \"all\".\n\nReturns:\n    On success: {\"status\": \"success\", \"filter\": ..., \"count\": N, \"tasks\": [...]}.\n    On failure: {\"status\": \"error\", \"error_type\": ..., \"message\": ...}.",
+            "parameters": {
+              "properties": {
+                "status": {
+                  "default": "pending",
+                  "title": "Status",
+                  "type": "string"
+                }
+              },
+              "title": "list_tasksParams",
+              "type": "object"
+            },
+            "type": "function"
+          },
+          {
+            "name": "complete_task",
+            "description": "Mark an existing task as completed.\n\nArgs:\n    task_id: The task identifier, e.g. \"TASK-001\".\n\nReturns:\n    On success: {\"status\": \"success\", \"task\": {...}} with status \"completed\".\n    On failure: {\"status\": \"error\", \"error_type\": \"not_found\" | \"validation_error\", ...}.",
+            "parameters": {
+              "properties": {
+                "task_id": {
+                  "title": "Task Id",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "task_id"
+              ],
+              "title": "complete_taskParams",
+              "type": "object"
+            },
+            "type": "function"
+          }
+        ],
+        "gen_ai.output.messages": [
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "id": "tooluse_ZGdWXYtRPdq1BuDmyg8l3h",
+                "name": "create_task",
+                "arguments": {
+                  "due_date": "2026-11-23",
+                  "title": "Review the AgentCore architecture",
+                  "user_due_date_phrase": "next Monday"
+                },
+                "type": "tool_call"
+              },
+              {
+                "id": "tooluse_zrkbl7wLtrSemdJMpd95k7",
+                "name": "list_tasks",
+                "arguments": {
+                  "status": "pending"
+                },
+                "type": "tool_call"
+              }
+            ],
+            "finish_reason": "stop"
+          }
+        ]
+      },
+      "flags": 1,
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "8e180f04c64e6fe6",
+      "eventName": "gen_ai.client.inference.operation.details"
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExMx8xNzk1MDE3MTEzNzQwHzI5NjMxMTg2NDQ0NzcyODIxMTAfMB8xNzk1MDE3MTEzMDc0"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.076",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "05d287f88d676543",
+      "parentSpanId": "674de725ba37d6d2",
+      "flags": 256,
+      "name": "execute_tool create_task",
+      "kind": "INTERNAL",
+      "startTimeUnixNano": 1795017113075747300,
+      "endTimeUnixNano": 1795017113076471300,
+      "durationNano": 723864,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "gen_ai.tool.call.id": "tooluse_ZGdWXYtRPdq1BuDmyg8l3h",
+        "gcp.vertex.agent.event_id": "5932ac7a-096c-4919-8e67-ed38c6c370b0",
+        "gen_ai.operation.name": "execute_tool",
+        "gen_ai.tool.description": "Create a new task with a title and a due date.\n\nArgs:\n    title: Short description of the task, e.g. \"Complete the architecture review\".\n    due_date: Due date in ISO format YYYY-MM-DD. Convert relative dates such as\n        \"Friday\" or \"tomorrow\" to an absolute date before calling.\n    user_due_date_phrase: The due-date words exactly as the USER wrote them,\n        e.g. \"Friday\", \"next Monday\", \"2026-11-25\". Never make this up; if the\n        user gave no due date, do not call this tool - ask them instead.\n\nReturns:\n    On success: {\"status\": \"success\", \"task\": {...}} including the new task_id.\n    On failure: {\"status\": \"error\", \"error_type\": ..., \"message\": ...}.",
+        "gen_ai.tool.name": "create_task",
+        "gen_ai.tool.type": "FunctionTool",
+        "gen_ai.agent.name": "productivity_assistant",
+        "aws.genai.span_kind": "TOOL",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "aws.local.environment": "bedrock-agentcore:default"
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfMh8xNzk1MDE3MTEzMDc2"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.076",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "70eed6af3a0d5833",
+      "parentSpanId": "674de725ba37d6d2",
+      "flags": 256,
+      "name": "execute_tool list_tasks",
+      "kind": "INTERNAL",
+      "startTimeUnixNano": 1795017113076620500,
+      "endTimeUnixNano": 1795017113076948000,
+      "durationNano": 327492,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "gen_ai.tool.call.id": "tooluse_zrkbl7wLtrSemdJMpd95k7",
+        "gcp.vertex.agent.event_id": "44a45ea8-1196-454b-aae4-f05813509848",
+        "gen_ai.operation.name": "execute_tool",
+        "gen_ai.tool.description": "List tasks, filtered by status.\n\nArgs:\n    status: Which tasks to return: \"pending\" (default for \"my tasks\"),\n        \"completed\", or \"all\".\n\nReturns:\n    On success: {\"status\": \"success\", \"filter\": ..., \"count\": N, \"tasks\": [...]}.\n    On failure: {\"status\": \"error\", \"error_type\": ..., \"message\": ...}.",
+        "gen_ai.tool.name": "list_tasks",
+        "gen_ai.tool.type": "FunctionTool",
+        "gen_ai.agent.name": "productivity_assistant",
+        "aws.genai.span_kind": "TOOL",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "aws.local.environment": "bedrock-agentcore:default"
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfMx8xNzk1MDE3MTEzMDc2"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.076",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.44.0",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "aws.log.stream.names": "otel-rt-logs",
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "cloud.provider": "aws",
+          "cloud.region": "ap-south-1",
+          "telemetry.auto.version": "0.21.0-aws",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.service.type": "gen_ai_agent"
+        }
+      },
+      "scope": {
+        "name": "productivity_agent.tools"
+      },
+      "timeUnixNano": 1795017113076030200,
+      "observedTimeUnixNano": 1795017113076162300,
+      "severityNumber": 9,
+      "severityText": "INFO",
+      "body": "create_task ok: TASK-002",
+      "attributes": {
+        "otelSpanID": "05d287f88d676543",
+        "otelTraceID": "6afdc99844cc152a5f43cfcd61381d45",
+        "otelTraceSampled": true,
+        "otelServiceName": "ProductivityAgent_default_agent.DEFAULT",
+        "code.file.path": "/var/task/tools.py",
+        "code.function.name": "create_task",
+        "code.line.number": 145
+      },
+      "flags": 1,
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "05d287f88d676543"
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExMx8xNzk1MDE3MTEzNzQwHzI5NjMxMTg2NDQ0NzcyODIxMTAfMR8xNzk1MDE3MTEzMDc2"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.077",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "bff465b66987d4f4",
+      "parentSpanId": "674de725ba37d6d2",
+      "flags": 256,
+      "name": "execute_tool (merged)",
+      "kind": "INTERNAL",
+      "startTimeUnixNano": 1795017113077186600,
+      "endTimeUnixNano": 1795017113077253600,
+      "durationNano": 66957,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "gen_ai.tool.call.id": "46a9a374-b81d-4d08-bcc7-9812e1f519c4",
+        "gcp.vertex.agent.event_id": "46a9a374-b81d-4d08-bcc7-9812e1f519c4",
+        "gen_ai.operation.name": "execute_tool",
+        "gen_ai.tool.description": "(merged tools)",
+        "gen_ai.tool.name": "(merged tools)",
+        "aws.genai.span_kind": "TOOL",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "aws.local.environment": "bedrock-agentcore:default"
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfNB8xNzk1MDE3MTEzMDc3"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.859",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "opentelemetry.instrumentation.aiohttp_client",
+        "version": "0.65b0"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "7725f1575cf2236f",
+      "parentSpanId": "fcaad3f34d7b62de",
+      "flags": 256,
+      "name": "POST",
+      "kind": "CLIENT",
+      "startTimeUnixNano": 1795017113086391300,
+      "endTimeUnixNano": 1795017113859764000,
+      "durationNano": 773372679,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "telemetry.extended": "true",
+        "http.url": "https://bedrock-runtime.ap-south-1.amazonaws.com/model/apac.amazon.nova-lite-v1%3A0/converse",
+        "aws.remote.service": "bedrock-runtime.ap-south-1.amazonaws.com",
+        "aws.local.environment": "bedrock-agentcore:default",
+        "aws.remote.operation": "POST /model",
+        "http.status_code": 200,
+        "aws.local.operation": "UnmappedOperation",
+        "aws.span.kind": "CLIENT",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "http.method": "POST",
+        "http.response.status_code": 200,
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2"
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfNR8xNzk1MDE3MTEzODU5"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.862",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "fcaad3f34d7b62de",
+      "parentSpanId": "674de725ba37d6d2",
+      "flags": 256,
+      "name": "generate_content bedrock/converse/apac.amazon.nova-lite-v1:0",
+      "kind": "INTERNAL",
+      "startTimeUnixNano": 1795017113079369200,
+      "endTimeUnixNano": 1795017113862425000,
+      "durationNano": 783055942,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "gen_ai.usage.output_tokens": 99,
+        "gen_ai.agent.name": "productivity_assistant",
+        "gcp.vertex.agent.invocation_id": "e-788f31f9-d9be-4096-90ee-8a61481e9a51",
+        "aws.genai.span_kind": "LLM",
+        "gen_ai.provider.name": "bedrock",
+        "aws.local.environment": "bedrock-agentcore:default",
+        "gcp.vertex.agent.event_id": "9ffd4781-1781-4ac4-abc0-1b2ea82c4e42",
+        "gen_ai.operation.name": "generate_content",
+        "gen_ai.usage.input_tokens": 2453,
+        "aws.genai.token_count_total": 2552,
+        "gen_ai.response.finish_reasons": [
+          "stop"
+        ],
+        "gen_ai.request.model": "bedrock/converse/apac.amazon.nova-lite-v1:0",
+        "gen_ai.conversation.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "gen_ai.usage.cache_creation.input_tokens": 0,
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "gen_ai.tool.definitions": "[{\"name\":\"create_task\",\"description\":\"Create a new task with a title and a due date.\\n\\nArgs:\\n    title: Short description of the task, e.g. \\\"Complete the architecture review\\\".\\n    due_date: Due date in ISO format YYYY-MM-DD. Convert relative dates such as\\n        \\\"Friday\\\" or \\\"tomorrow\\\" to an absolute date before calling.\\n    user_due_date_phrase: The due-date words exactly as the USER wrote them,\\n        e.g. \\\"Friday\\\", \\\"next Monday\\\", \\\"2026-11-25\\\". Never make this up; if the\\n        user gave no due date, do not call this tool - ask them instead.\\n\\nReturns:\\n    On success: {\\\"status\\\": \\\"success\\\", \\\"task\\\": {...}} including the new task_id.\\n    On failure: {\\\"status\\\": \\\"error\\\", \\\"error_type\\\": ..., \\\"message\\\": ...}.\",\"parameters\":null,\"type\":\"function\"},{\"name\":\"list_tasks\",\"description\":\"List tasks, filtered by status.\\n\\nArgs:\\n    status: Which tasks to return: \\\"pending\\\" (default for \\\"my tasks\\\"),\\n        \\\"completed\\\", or \\\"all\\\".\\n\\nReturns:\\n    On success: {\\\"status\\\": \\\"success\\\", \\\"filter\\\": ..., \\\"count\\\": N, \\\"tasks\\\": [...]}.\\n    On failure: {\\\"status\\\": \\\"error\\\", \\\"error_type\\\": ..., \\\"message\\\": ...}.\",\"parameters\":null,\"type\":\"function\"},{\"name\":\"complete_task\",\"description\":\"Mark an existing task as completed.\\n\\nArgs:\\n    task_id: The task identifier, e.g. \\\"TASK-001\\\".\\n\\nReturns:\\n    On success: {\\\"status\\\": \\\"success\\\", \\\"task\\\": {...}} with status \\\"completed\\\".\\n    On failure: {\\\"status\\\": \\\"error\\\", \\\"error_type\\\": \\\"not_found\\\" | \\\"validation_error\\\", ...}.\",\"parameters\":null,\"type\":\"function\"}]",
+        "gen_ai.usage.cache_read.input_tokens": 0
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfNh8xNzk1MDE3MTEzODYy"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.862",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.44.0",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "aws.log.stream.names": "otel-rt-logs",
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "cloud.provider": "aws",
+          "cloud.region": "ap-south-1",
+          "telemetry.auto.version": "0.21.0-aws",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.service.type": "gen_ai_agent"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1",
+        "schemaUrl": "https://opentelemetry.io/schemas/1.36.0"
+      },
+      "timeUnixNano": 0,
+      "observedTimeUnixNano": 1795017113862162200,
+      "severityNumber": 0,
+      "severityText": "",
+      "attributes": {
+        "gen_ai.agent.name": "productivity_assistant",
+        "gen_ai.conversation.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "gcp.vertex.agent.event_id": "9ffd4781-1781-4ac4-abc0-1b2ea82c4e42",
+        "gcp.vertex.agent.invocation_id": "e-788f31f9-d9be-4096-90ee-8a61481e9a51",
+        "gen_ai.provider.name": "bedrock",
+        "user.id": "demo-user",
+        "gen_ai.response.finish_reasons": [
+          "stop"
+        ],
+        "gen_ai.usage.input_tokens": 2453,
+        "gen_ai.usage.output_tokens": 99,
+        "gen_ai.usage.cache_read.input_tokens": 0,
+        "gen_ai.usage.cache_creation.input_tokens": 0,
+        "gen_ai.input.messages": [
+          {
+            "role": "user",
+            "parts": [
+              {
+                "content": "Create a task to complete the architecture review by Friday.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "content": "The user has provided a title for the task but has not provided a due date. The user mentioned \"by Friday\", which needs to be converted to an absolute date before creating the task.",
+                "type": "text"
+              },
+              {
+                "content": "\n",
+                "type": "text"
+              },
+              {
+                "id": "tooluse_cUSCQY16Jsnqq4XTBx4lXk",
+                "name": "create_task",
+                "arguments": {
+                  "due_date": "2026-11-20",
+                  "title": "Complete the architecture review",
+                  "user_due_date_phrase": "by Friday"
+                },
+                "type": "tool_call"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "id": "tooluse_cUSCQY16Jsnqq4XTBx4lXk",
+                "response": {
+                  "status": "success",
+                  "message": "Task TASK-001 created.",
+                  "task": {
+                    "task_id": "TASK-001",
+                    "title": "Complete the architecture review",
+                    "due_date": "2026-11-20",
+                    "status": "pending",
+                    "created_at": "2026-11-18T15:51:42+00:00",
+                    "completed_at": null
+                  },
+                  "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."
+                },
+                "type": "tool_call_response"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "content": " The task to complete the architecture review by Friday has been successfully created. ",
+                "type": "text"
+              },
+              {
+                "content": "\nThe task \"Complete the architecture review\" has been created and is due by Friday, 2026-11-20.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "content": "Show me all my pending tasks.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "id": "tooluse_BSAh7zuiHYSp913LT2bMDJ",
+                "name": "list_tasks",
+                "arguments": {
+                  "status": "pending"
+                },
+                "type": "tool_call"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "id": "tooluse_BSAh7zuiHYSp913LT2bMDJ",
+                "response": {
+                  "status": "success",
+                  "filter": "pending",
+                  "count": 1,
+                  "tasks": [
+                    {
+                      "task_id": "TASK-001",
+                      "title": "Complete the architecture review",
+                      "due_date": "2026-11-20",
+                      "status": "pending",
+                      "created_at": "2026-11-18T15:51:42+00:00",
+                      "completed_at": null
+                    }
+                  ]
+                },
+                "type": "tool_call_response"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "content": "Here are your pending tasks:\n\n- **TASK-001**: Complete the architecture review, due by Friday, 2026-11-20.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "content": "Create a task for reviewing the AgentCore architecture due next Monday and then show me all my pending tasks.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "id": "tooluse_ZGdWXYtRPdq1BuDmyg8l3h",
+                "name": "create_task",
+                "arguments": {
+                  "due_date": "2026-11-23",
+                  "title": "Review the AgentCore architecture",
+                  "user_due_date_phrase": "next Monday"
+                },
+                "type": "tool_call"
+              },
+              {
+                "id": "tooluse_zrkbl7wLtrSemdJMpd95k7",
+                "name": "list_tasks",
+                "arguments": {
+                  "status": "pending"
+                },
+                "type": "tool_call"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "id": "tooluse_ZGdWXYtRPdq1BuDmyg8l3h",
+                "response": {
+                  "status": "success",
+                  "message": "Task TASK-002 created.",
+                  "task": {
+                    "task_id": "TASK-002",
+                    "title": "Review the AgentCore architecture",
+                    "due_date": "2026-11-23",
+                    "status": "pending",
+                    "created_at": "2026-11-18T15:51:53+00:00",
+                    "completed_at": null
+                  },
+                  "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."
+                },
+                "type": "tool_call_response"
+              },
+              {
+                "id": "tooluse_zrkbl7wLtrSemdJMpd95k7",
+                "response": {
+                  "status": "success",
+                  "filter": "pending",
+                  "count": 2,
+                  "tasks": [
+                    {
+                      "task_id": "TASK-001",
+                      "title": "Complete the architecture review",
+                      "due_date": "2026-11-20",
+                      "status": "pending",
+                      "created_at": "2026-11-18T15:51:42+00:00",
+                      "completed_at": null
+                    },
+                    {
+                      "task_id": "TASK-002",
+                      "title": "Review the AgentCore architecture",
+                      "due_date": "2026-11-23",
+                      "status": "pending",
+                      "created_at": "2026-11-18T15:51:53+00:00",
+                      "completed_at": null
+                    }
+                  ]
+                },
+                "type": "tool_call_response"
+              }
+            ]
+          }
+        ],
+        "gen_ai.system_instructions": [
+          {
+            "content": "You are a Personal Productivity Assistant that manages the user's tasks.\n\nTools:\n- create_task(title, due_date, user_due_date_phrase): create a task.\n  due_date MUST be YYYY-MM-DD; user_due_date_phrase is the date words the user typed.\n- list_tasks(status): list tasks; status is \"pending\", \"completed\" or \"all\".\n- complete_task(task_id): mark a task as completed, e.g. \"TASK-001\".\n\nHow to work:\n1. Work out EVERY operation the user is asking for and call one tool per\n   operation, in order. Requests joined by \"and\", \"then\" or \"also\" need\n   several tool calls in the same turn. Example: \"create X and show my tasks\"\n   = call create_task, then call list_tasks.\n2. Whenever you show tasks to the user, you MUST call list_tasks in this turn\n   and show exactly what it returned. Never build a task list from memory or\n   from earlier messages - tasks may have changed.\n3. Convert relative dates (\"Friday\", \"tomorrow\", \"next Monday\", \"end of week\")\n   to an absolute YYYY-MM-DD date using the calendar below. \"By <weekday>\"\n   means the next occurrence of that weekday (today counts if it is that day).\n4. If the user has not given a task title or a due date, do NOT call\n   create_task: ask for the missing detail. Never invent or assume a due date.\n5. Use the conversation history: \"that task\", \"the first one\" or \"it\" refer to\n   tasks mentioned earlier in this session.\n6. Base every statement about tasks ONLY on tool results from this turn or\n   earlier turns. Never invent task IDs, titles, dates or statuses.\n7. If a tool returns \"status\": \"error\", tell the user plainly that the\n   operation failed and why (use the message). Never say an operation\n   succeeded unless its tool returned \"status\": \"success\". If one step of a\n   multi-step request fails, report which steps succeeded and which failed.\n8. Present task lists clearly: ID, title, due date, status. Keep replies concise.\n\nToday is Wednesday, 2026-11-18 (timezone UTC).\nCalendar for the next days:\n- Wednesday: 2026-11-18 (today)\n- Thursday: 2026-11-19\n- Friday: 2026-11-20\n- Saturday: 2026-11-21\n- Sunday: 2026-11-22\n- Monday: 2026-11-23\n- Tuesday: 2026-11-24\n- Wednesday: 2026-11-25\n\n\nYou are an agent. Your internal name is \"productivity_assistant\". The description about you is \"Manages the user's tasks: create, list and complete.\".",
+            "type": "text"
+          }
+        ],
+        "gen_ai.tool.definitions": [
+          {
+            "name": "create_task",
+            "description": "Create a new task with a title and a due date.\n\nArgs:\n    title: Short description of the task, e.g. \"Complete the architecture review\".\n    due_date: Due date in ISO format YYYY-MM-DD. Convert relative dates such as\n        \"Friday\" or \"tomorrow\" to an absolute date before calling.\n    user_due_date_phrase: The due-date words exactly as the USER wrote them,\n        e.g. \"Friday\", \"next Monday\", \"2026-11-25\". Never make this up; if the\n        user gave no due date, do not call this tool - ask them instead.\n\nReturns:\n    On success: {\"status\": \"success\", \"task\": {...}} including the new task_id.\n    On failure: {\"status\": \"error\", \"error_type\": ..., \"message\": ...}.",
+            "parameters": {
+              "properties": {
+                "title": {
+                  "title": "Title",
+                  "type": "string"
+                },
+                "due_date": {
+                  "title": "Due Date",
+                  "type": "string"
+                },
+                "user_due_date_phrase": {
+                  "title": "User Due Date Phrase",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "due_date",
+                "user_due_date_phrase"
+              ],
+              "title": "create_taskParams",
+              "type": "object"
+            },
+            "type": "function"
+          },
+          {
+            "name": "list_tasks",
+            "description": "List tasks, filtered by status.\n\nArgs:\n    status: Which tasks to return: \"pending\" (default for \"my tasks\"),\n        \"completed\", or \"all\".\n\nReturns:\n    On success: {\"status\": \"success\", \"filter\": ..., \"count\": N, \"tasks\": [...]}.\n    On failure: {\"status\": \"error\", \"error_type\": ..., \"message\": ...}.",
+            "parameters": {
+              "properties": {
+                "status": {
+                  "default": "pending",
+                  "title": "Status",
+                  "type": "string"
+                }
+              },
+              "title": "list_tasksParams",
+              "type": "object"
+            },
+            "type": "function"
+          },
+          {
+            "name": "complete_task",
+            "description": "Mark an existing task as completed.\n\nArgs:\n    task_id: The task identifier, e.g. \"TASK-001\".\n\nReturns:\n    On success: {\"status\": \"success\", \"task\": {...}} with status \"completed\".\n    On failure: {\"status\": \"error\", \"error_type\": \"not_found\" | \"validation_error\", ...}.",
+            "parameters": {
+              "properties": {
+                "task_id": {
+                  "title": "Task Id",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "task_id"
+              ],
+              "title": "complete_taskParams",
+              "type": "object"
+            },
+            "type": "function"
+          }
+        ],
+        "gen_ai.output.messages": [
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "content": "The task \"Review the AgentCore architecture\" has been created and is due by next Monday, 2026-11-23. Here are all your pending tasks:\n\n- **TASK-001**: Complete the architecture review, due by Friday, 2026-11-20.\n- **TASK-002**: Review the AgentCore architecture, due by next Monday, 2026-11-23.",
+                "type": "text"
+              }
+            ],
+            "finish_reason": "stop"
+          }
+        ]
+      },
+      "flags": 1,
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "fcaad3f34d7b62de",
+      "eventName": "gen_ai.client.inference.operation.details"
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNB8xNzk1MDE3MTE0NzYyHzYzMzMzNjg0MzQ1NTQzNDc0ODMfMB8xNzk1MDE3MTEzODYy"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.864",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "674de725ba37d6d2",
+      "parentSpanId": "ee5eb7c0b66af7ad",
+      "flags": 256,
+      "name": "invoke_agent productivity_assistant",
+      "kind": "INTERNAL",
+      "startTimeUnixNano": 1795017112438715600,
+      "endTimeUnixNano": 1795017113864111900,
+      "durationNano": 1425396203,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "gen_ai.operation.name": "invoke_agent",
+        "gen_ai.agent.name": "productivity_assistant",
+        "aws.genai.span_kind": "AGENT",
+        "gen_ai.conversation.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "gen_ai.agent.description": "Manages the user's tasks: create, list and complete.",
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "aws.local.environment": "bedrock-agentcore:default"
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfNx8xNzk1MDE3MTEzODY0"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.864",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "gcp.vertex.agent",
+        "version": "2.14.1"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "ee5eb7c0b66af7ad",
+      "parentSpanId": "1aec146d41871bde",
+      "flags": 256,
+      "name": "invoke_workflow productivity_assistant",
+      "kind": "INTERNAL",
+      "startTimeUnixNano": 1795017112423749400,
+      "endTimeUnixNano": 1795017113864466700,
+      "durationNano": 1440717327,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "gen_ai.operation.name": "invoke_workflow",
+        "gen_ai.conversation.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "gen_ai.workflow.name": "productivity_assistant",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "aws.local.environment": "bedrock-agentcore:default"
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfOB8xNzk1MDE3MTEzODY0"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.864",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.44.0",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "aws.log.stream.names": "otel-rt-logs",
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "cloud.provider": "aws",
+          "cloud.region": "ap-south-1",
+          "telemetry.auto.version": "0.21.0-aws",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.service.type": "gen_ai_agent"
+        }
+      },
+      "scope": {
+        "name": "productivity_agent"
+      },
+      "timeUnixNano": 1795017113864536300,
+      "observedTimeUnixNano": 1795017113864676600,
+      "severityNumber": 9,
+      "severityText": "INFO",
+      "body": "tool_call create_task args={'due_date': '2026-11-23', 'title': 'Review the AgentCore architecture', 'user_due_date_phrase': 'next Monday'} result={'status': 'success', 'message': 'Task TASK-002 created.', 'task': {'task_id': 'TASK-002', 'title': 'Review the AgentCore architecture', 'due_date': '2026-11-23', 'status': 'pending', 'created_at': '2026-11-18T15:51:53+00:00', 'completed_at': None}, 'note': \"The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory.\"}",
+      "attributes": {
+        "otelSpanID": "1aec146d41871bde",
+        "otelTraceID": "6afdc99844cc152a5f43cfcd61381d45",
+        "otelTraceSampled": true,
+        "otelServiceName": "ProductivityAgent_default_agent.DEFAULT",
+        "code.file.path": "/var/task/agent.py",
+        "code.function.name": "run_turn",
+        "code.line.number": 147
+      },
+      "flags": 1,
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "1aec146d41871bde"
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNB8xNzk1MDE3MTE0NzYyHzYzMzMzNjg0MzQ1NTQzNDc0ODMfMR8xNzk1MDE3MTEzODY0"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.864",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.44.0",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "aws.log.stream.names": "otel-rt-logs",
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "cloud.provider": "aws",
+          "cloud.region": "ap-south-1",
+          "telemetry.auto.version": "0.21.0-aws",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.service.type": "gen_ai_agent"
+        }
+      },
+      "scope": {
+        "name": "productivity_agent"
+      },
+      "timeUnixNano": 1795017113864761900,
+      "observedTimeUnixNano": 1795017113864819000,
+      "severityNumber": 9,
+      "severityText": "INFO",
+      "body": "tool_call list_tasks args={'status': 'pending'} result={'status': 'success', 'filter': 'pending', 'count': 2, 'tasks': [{'task_id': 'TASK-001', 'title': 'Complete the architecture review', 'due_date': '2026-11-20', 'status': 'pending', 'created_at': '2026-11-18T15:51:42+00:00', 'completed_at': None}, {'task_id': 'TASK-002', 'title': 'Review the AgentCore architecture', 'due_date': '2026-11-23', 'status': 'pending', 'created_at': '2026-11-18T15:51:53+00:00', 'completed_at': None}]}",
+      "attributes": {
+        "otelSpanID": "1aec146d41871bde",
+        "otelTraceID": "6afdc99844cc152a5f43cfcd61381d45",
+        "otelTraceSampled": true,
+        "otelServiceName": "ProductivityAgent_default_agent.DEFAULT",
+        "code.file.path": "/var/task/agent.py",
+        "code.function.name": "run_turn",
+        "code.line.number": 147
+      },
+      "flags": 1,
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "1aec146d41871bde"
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNB8xNzk1MDE3MTE0NzYyHzYzMzMzNjg0MzQ1NTQzNDc0ODMfMh8xNzk1MDE3MTEzODY0"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.865",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "cloud.region": "ap-south-1",
+          "aws.log.stream.names": "otel-rt-logs",
+          "telemetry.sdk.name": "opentelemetry",
+          "aws.service.type": "gen_ai_agent",
+          "telemetry.sdk.language": "python",
+          "cloud.provider": "aws",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "telemetry.sdk.version": "1.44.0",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "telemetry.auto.version": "0.21.0-aws"
+        }
+      },
+      "scope": {
+        "name": "opentelemetry.instrumentation.starlette",
+        "version": "0.65b0"
+      },
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "1aec146d41871bde",
+      "parentSpanId": "a905b1575057d49d",
+      "flags": 768,
+      "name": "POST /invocations",
+      "kind": "SERVER",
+      "startTimeUnixNano": 1795017112422039600,
+      "endTimeUnixNano": 1795017113865643000,
+      "durationNano": 1443603504,
+      "attributes": {
+        "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+        "net.peer.port": 34898,
+        "telemetry.extended": "true",
+        "http.target": "/invocations",
+        "http.flavor": "1.1",
+        "http.url": "http://cell01.ap-south-1.prod.arp.kepler-analytics.aws.dev/invocations",
+        "net.peer.ip": "127.0.0.1",
+        "http.host": "127.0.0.1:8080",
+        "aws.local.environment": "bedrock-agentcore:default",
+        "http.status_code": 200,
+        "aws.local.operation": "POST /invocations",
+        "aws.span.kind": "SERVER",
+        "http.server_name": "cell01.ap-south-1.prod.arp.kepler-analytics.aws.dev",
+        "net.host.port": 8080,
+        "http.route": "/invocations",
+        "PlatformType": "AWS::BedrockAgentCore",
+        "http.method": "POST",
+        "http.response.status_code": 200,
+        "session.id": "demo-remote-ec59bc52-f11c-4255-bef2-e14a666f39f2",
+        "http.scheme": "http"
+      },
+      "status": {
+        "code": "UNSET"
+      }
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNh8xNzk1MDE3MTE2Mzk1HzQzNTkwMjc1Mjc4ODczMTI0NzMfOR8xNzk1MDE3MTEzODY1"
+  },
+  {
+    "@timestamp": "2026-11-18 15:51:53.865",
+    "@message": {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.44.0",
+          "service.instance.id": "6bb9b1eb-93ff-4a6e-9ed6-fc2be56557c3",
+          "service.name": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.log.group.names": "/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT",
+          "aws.log.stream.names": "otel-rt-logs",
+          "deployment.environment.name": "bedrock-agentcore:default",
+          "cloud.resource_id": "arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-udnE0mDtwm/runtime-endpoint/DEFAULT:DEFAULT",
+          "cloud.platform": "aws_bedrock_agentcore",
+          "cloud.provider": "aws",
+          "cloud.region": "ap-south-1",
+          "telemetry.auto.version": "0.21.0-aws",
+          "aws.local.service": "ProductivityAgent_default_agent.DEFAULT",
+          "aws.service.type": "gen_ai_agent"
+        }
+      },
+      "scope": {
+        "name": "bedrock_agentcore.app"
+      },
+      "timeUnixNano": 1795017113865077800,
+      "observedTimeUnixNano": 1795017113865241600,
+      "severityNumber": 9,
+      "severityText": "INFO",
+      "body": "Invocation completed successfully (1.443s)",
+      "attributes": {
+        "otelSpanID": "1aec146d41871bde",
+        "otelTraceID": "6afdc99844cc152a5f43cfcd61381d45",
+        "otelTraceSampled": true,
+        "otelServiceName": "ProductivityAgent_default_agent.DEFAULT",
+        "code.file.path": "/var/task/bedrock_agentcore/runtime/app.py",
+        "code.function.name": "_handle_invocation",
+        "code.line.number": 598
+      },
+      "flags": 1,
+      "traceId": "6afdc99844cc152a5f43cfcd61381d45",
+      "spanId": "1aec146d41871bde"
+    },
+    "@ptr": "hotstore:NTkwMTgzNzI1MTI4Oi9hd3MvYmVkcm9jay1hZ2VudGNvcmUvcnVudGltZXMvUHJvZHVjdGl2aXR5QWdlbnRfZGVmYXVsdF9hZ2VudC11ZG5FMG1EdHdtLURFRkFVTFQfMTc5NTAxNzExNB8xNzk1MDE3MTE0NzYyHzYzMzMzNjg0MzQ1NTQzNDc0ODMfMx8xNzk1MDE3MTEzODY1"
+  }
+]
