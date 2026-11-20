@@ -1,7 +1,7 @@
 # Demo run (local)
 
-- Started: 2026-11-18T15:45:05+00:00
-- Session ID: `demo-local-b64b2747-a174-41f8-8655-3664cd363b7e`
+- Started: 2026-11-20T07:50:54+00:00
+- Session ID: `demo-local-e87ce955-622c-459e-a691-6e5ba11cd385`
 
 ## S1. Create a task (AC-03) - PASS
 
@@ -9,17 +9,14 @@
 
 **Tool calls:**
 
-- `create_task({"due_date": "2026-11-20", "title": "Complete the architecture review", "user_due_date_phrase": "Friday"})` -> `{"status": "success", "message": "Task TASK-001 created.", "task": {"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-20", "status": "pending", "created_at": "2026-11-18T15:45:07+00:00", "completed_at": null}, "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."}`
-- `list_tasks({"status": "pending"})` -> `{"status": "success", "filter": "pending", "count": 1, "tasks": [{"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-20", "status": "pending", "created_at": "2026-11-18T15:45:07+00:00", "completed_at": null}]}`
+- `create_task({"due_date": "2026-11-27", "title": "Complete the architecture review", "user_due_date_phrase": "Friday"})` -> `{"status": "success", "message": "Task TASK-001 created.", "task": {"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-27", "status": "pending", "created_at": "2026-11-20T07:51:04+00:00", "completed_at": null}, "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."}`
+- `list_tasks({"status": "pending"})` -> `{"status": "success", "filter": "pending", "count": 1, "tasks": [{"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-27", "status": "pending", "created_at": "2026-11-20T07:51:04+00:00", "completed_at": null}]}`
 
 **Agent response:**
 
-> I have created a task for you: "Complete the architecture review" due by Friday. Here is the task:
+> The task "Complete the architecture review" has been created and is due by Friday, 2026-11-27. Here is the task list:
 > 
-> - ID: TASK-001
-> - Title: Complete the architecture review
-> - Due date: 2026-11-20
-> - Status: Pending
+> - **TASK-001**: Complete the architecture review, due by 2026-11-27.
 
 _Check: create_task succeeded_
 
@@ -29,16 +26,13 @@ _Check: create_task succeeded_
 
 **Tool calls:**
 
-- `list_tasks({"status": "pending"})` -> `{"status": "success", "filter": "pending", "count": 1, "tasks": [{"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-20", "status": "pending", "created_at": "2026-11-18T15:45:07+00:00", "completed_at": null}]}`
+- `list_tasks({"status": "pending"})` -> `{"status": "success", "filter": "pending", "count": 1, "tasks": [{"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-27", "status": "pending", "created_at": "2026-11-20T07:51:04+00:00", "completed_at": null}]}`
 
 **Agent response:**
 
 > Here are all your pending tasks:
 > 
-> - ID: TASK-001
-> - Title: Complete the architecture review
-> - Due date: 2026-11-20
-> - Status: Pending
+> - **TASK-001**: Complete the architecture review, due by 2026-11-27.
 
 _Check: list_tasks succeeded_
 
@@ -48,22 +42,15 @@ _Check: list_tasks succeeded_
 
 **Tool calls:**
 
-- `create_task({"due_date": "2026-11-23", "title": "Review the AgentCore architecture", "user_due_date_phrase": "next Monday"})` -> `{"status": "success", "message": "Task TASK-002 created.", "task": {"task_id": "TASK-002", "title": "Review the AgentCore architecture", "due_date": "2026-11-23", "status": "pending", "created_at": "2026-11-18T15:45:12+00:00", "completed_at": null}, "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."}`
-- `list_tasks({"status": "pending"})` -> `{"status": "success", "filter": "pending", "count": 2, "tasks": [{"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-20", "status": "pending", "created_at": "2026-11-18T15:45:07+00:00", "completed_at": null}, {"task_id": "TASK-002", "title": "Review the AgentCore architecture", "due_date": "2026-11-23", "status": "pending", "created_at": "2026-11-18T15:45:12+00:00", "completed_at": null}]}`
+- `create_task({"due_date": "2026-11-23", "title": "Review the AgentCore architecture", "user_due_date_phrase": "next Monday"})` -> `{"status": "success", "message": "Task TASK-002 created.", "task": {"task_id": "TASK-002", "title": "Review the AgentCore architecture", "due_date": "2026-11-23", "status": "pending", "created_at": "2026-11-20T07:51:12+00:00", "completed_at": null}, "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."}`
+- `list_tasks({"status": "pending"})` -> `{"status": "success", "filter": "pending", "count": 2, "tasks": [{"task_id": "TASK-002", "title": "Review the AgentCore architecture", "due_date": "2026-11-23", "status": "pending", "created_at": "2026-11-20T07:51:12+00:00", "completed_at": null}, {"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-27", "status": "pending", "created_at": "2026-11-20T07:51:04+00:00", "completed_at": null}]}`
 
 **Agent response:**
 
-> I have created a task for you: "Review the AgentCore architecture" due by next Monday. Here are all your pending tasks:
+> The task "Review the AgentCore architecture" has been created and is due by next Monday, 2026-11-23. Here are all your pending tasks:
 > 
-> - ID: TASK-001
-> - Title: Complete the architecture review
-> - Due date: 2026-11-20
-> - Status: Pending
-> 
-> - ID: TASK-002
-> - Title: Review the AgentCore architecture
-> - Due date: 2026-11-23
-> - Status: Pending
+> - **TASK-002**: Review the AgentCore architecture, due by 2026-11-23.
+> - **TASK-001**: Complete the architecture review, due by 2026-11-27.
 
 _Check: create_task AND list_tasks in one turn_
 
@@ -73,16 +60,13 @@ _Check: create_task AND list_tasks in one turn_
 
 **Tool calls:**
 
-- `complete_task({"task_id": "TASK-001"})` -> `{"status": "success", "message": "Task TASK-001 marked as completed.", "changed": true, "task": {"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-20", "status": "completed", "created_at": "2026-11-18T15:45:07+00:00", "completed_at": "2026-11-18T15:45:15+00:00"}, "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."}`
+- `complete_task({"task_id": "TASK-001"})` -> `{"status": "success", "message": "Task TASK-001 marked as completed.", "changed": true, "task": {"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-27", "status": "completed", "created_at": "2026-11-20T07:51:04+00:00", "completed_at": "2026-11-20T07:51:15+00:00"}, "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."}`
 
 **Agent response:**
 
-> I have marked task TASK-001 as completed. Here are all your pending tasks:
+> Task TASK-001 has been marked as completed. Here are all your pending tasks:
 > 
-> - ID: TASK-002
-> - Title: Review the AgentCore architecture
-> - Due date: 2026-11-23
-> - Status: Pending
+> - **TASK-002**: Review the AgentCore architecture, due by 2026-11-23.
 
 _Check: complete_task succeeded_
 
@@ -96,7 +80,7 @@ _Check: complete_task succeeded_
 
 **Agent response:**
 
-> I couldn't complete task TASK-999 because it does not exist. Please make sure the task ID is correct.
+> I couldn't find a task with the ID TASK-999. Please check the task ID and try again.
 
 _Check: complete_task returned not_found_
 
@@ -110,7 +94,7 @@ _Check: complete_task returned not_found_
 
 **Agent response:**
 
-> I need the due date for the task to call the vendor. Please provide the due date.
+> 
 
 _Check: no task created without a due date_
 
@@ -121,10 +105,11 @@ _Check: no task created without a due date_
 **Tool calls:**
 
 - `create_task({"due_date": "2026-02-30", "title": "Update the roadmap", "user_due_date_phrase": "2026-02-30"})` -> `{"status": "error", "error_type": "validation_error", "message": "'2026-02-30' is not a valid date. Use the format YYYY-MM-DD, e.g. 2026-11-20."}`
+- `create_task({"title": "Call the vendor"})` -> `{"error": "Invoking `create_task()` failed as the following mandatory input parameters are not present:\ndue_date\nuser_due_date_phrase\nYou could retry calling this tool, but it is IMPORTANT for you to provide all the mandatory parameters."}`
 
 **Agent response:**
 
-> I couldn't create the task because the due date "2026-02-30" is not valid. Please provide a valid date in the format YYYY-MM-DD.
+> I'm sorry, but I can't create a task with the due date "2026-02-30" because it is not a valid date. February only has 28 or 29 days. Please provide a valid date. Also, for the task "Call the vendor", you need to provide a due date.
 
 _Check: invalid date rejected_
 
@@ -134,22 +119,15 @@ _Check: invalid date rejected_
 
 **Tool calls:**
 
-- `complete_task({"task_id": "TASK-002"})` -> `{"status": "success", "message": "Task TASK-002 marked as completed.", "changed": true, "task": {"task_id": "TASK-002", "title": "Review the AgentCore architecture", "due_date": "2026-11-23", "status": "completed", "created_at": "2026-11-18T15:45:12+00:00", "completed_at": "2026-11-18T15:45:26+00:00"}, "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."}`
-- `list_tasks({"status": "all"})` -> `{"status": "success", "filter": "all", "count": 2, "tasks": [{"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-20", "status": "completed", "created_at": "2026-11-18T15:45:07+00:00", "completed_at": "2026-11-18T15:45:15+00:00"}, {"task_id": "TASK-002", "title": "Review the AgentCore architecture", "due_date": "2026-11-23", "status": "completed", "created_at": "2026-11-18T15:45:12+00:00", "completed_at": "2026-11-18T15:45:26+00:00"}]}`
+- `complete_task({"task_id": "TASK-002"})` -> `{"status": "success", "message": "Task TASK-002 marked as completed.", "changed": true, "task": {"task_id": "TASK-002", "title": "Review the AgentCore architecture", "due_date": "2026-11-23", "status": "completed", "created_at": "2026-11-20T07:51:12+00:00", "completed_at": "2026-11-20T07:51:28+00:00"}, "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."}`
+- `list_tasks({"status": "all"})` -> `{"status": "success", "filter": "all", "count": 2, "tasks": [{"task_id": "TASK-002", "title": "Review the AgentCore architecture", "due_date": "2026-11-23", "status": "completed", "created_at": "2026-11-20T07:51:12+00:00", "completed_at": "2026-11-20T07:51:28+00:00"}, {"task_id": "TASK-001", "title": "Complete the architecture review", "due_date": "2026-11-27", "status": "completed", "created_at": "2026-11-20T07:51:04+00:00", "completed_at": "2026-11-20T07:51:15+00:00"}]}`
 
 **Agent response:**
 
-> I have marked task TASK-002 as completed. Here are all your tasks, including completed ones:
+> Task TASK-002 has been marked as completed. Here are all your tasks, including completed ones:
 > 
-> - ID: TASK-001
-> - Title: Complete the architecture review
-> - Due date: 2026-11-20
-> - Status: Completed
-> 
-> - ID: TASK-002
-> - Title: Review the AgentCore architecture
-> - Due date: 2026-11-23
-> - Status: Completed
+> - **TASK-002**: Review the AgentCore architecture, due by 2026-11-23, completed on 2026-11-20.
+> - **TASK-001**: Complete the architecture review, due by 2026-11-27, completed on 2026-11-20.
 
 _Check: resolved 'the AgentCore task' to TASK-002 from session context_
 
@@ -163,7 +141,7 @@ _Check: resolved 'the AgentCore task' to TASK-002 from session context_
 
 **Agent response:**
 
-> I'm sorry, but I couldn't show you your pending tasks because there was a failure in the list_tasks operation. Please try again later.
+> I'm sorry, but I'm currently unable to show your pending tasks due to a temporary issue with the task backend. Please try again later.
 
 _Check: list_tasks failed and agent reported it_
 
@@ -173,11 +151,11 @@ _Check: list_tasks failed and agent reported it_
 
 **Tool calls:**
 
-- `create_task({"due_date": "2026-11-20", "title": "Prepare the demo slides", "user_due_date_phrase": "Friday"})` -> `{"status": "error", "error_type": "tool_failure", "message": "The create_task operation failed: Task backend unavailable while executing create_task (simulated failure).. The operation was NOT performed."}`
+- `create_task({"due_date": "2026-11-27", "title": "Prepare the demo slides", "user_due_date_phrase": "Friday"})` -> `{"status": "error", "error_type": "tool_failure", "message": "The create_task operation failed: Task backend unavailable while executing create_task (simulated failure).. The operation was NOT performed."}`
 
 **Agent response:**
 
-> I'm sorry, but I couldn't create the task to prepare the demo slides because there was a failure in the create_task operation. Please try again later.
+> I'm sorry, but I'm currently unable to create a new task due to a temporary issue with the task backend. Please try again later.
 
 _Check: create_task failed, no false success claim_
 
