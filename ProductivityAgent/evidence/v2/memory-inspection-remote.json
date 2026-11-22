@@ -1,0 +1,240 @@
+{
+  "memory_id": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+  "records": {
+    "USER-A-R1209": [
+      {
+        "memoryRecordId": "mem-b6a25be6-aa0b-4179-ae21-42e223c91351",
+        "content": {
+          "text": "{\"context\":\"Summarizing or listing tasks or to-do items for the user in future responses; supersedes earlier preference for short bullet-point summaries\",\"preference\":\"Prefers tasks to be shown in a table rather than short bullet-point summaries\",\"categories\":[\"task summaries\",\"formatting\",\"communication style\",\"task display\",\"output format\"]}"
+        },
+        "memoryStrategyId": "user_preferences-opRIaKFLR5",
+        "namespaces": [
+          "/actor/USER-A-R1209/preferences/"
+        ],
+        "createdAt": "2026-11-22T06:43:51.489Z",
+        "timestamp": "2026-11-22T06:42:45.145Z",
+        "metadata": {
+          "x-amz-agentcore-memory-recordType": {
+            "stringValue": "BASE"
+          },
+          "x-amz-agentcore-memory-strategyType": {
+            "stringValue": "USER_PREFERENCE"
+          },
+          "x-amz-agentcore-memory-createdAt": {
+            "dateTimeValue": "2026-11-22T06:43:51.489Z"
+          },
+          "x-amz-agentcore-memory-updatedAt": {
+            "dateTimeValue": "2026-11-22T06:43:51.489Z"
+          }
+        }
+      }
+    ],
+    "USER-B-R1209": []
+  },
+  "events": {
+    "USER-A-R1209/v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39": [
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-A-R1209",
+        "sessionId": "v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39",
+        "eventId": "0000001795329646119#7eff5d22",
+        "eventTimestamp": "2026-11-22T06:40:46.119Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "Acknowledged, I will remember your preference for short bullet-point task summaries. Please provide the due date for the architecture review task so I can create it."
+              },
+              "role": "ASSISTANT"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      },
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-A-R1209",
+        "sessionId": "v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39",
+        "eventId": "0000001795329645372#71002bf5",
+        "eventTimestamp": "2026-11-22T06:40:45.372Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "Remember that I prefer short bullet-point task summaries."
+              },
+              "role": "USER"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      },
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-A-R1209",
+        "sessionId": "v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39",
+        "eventId": "0000001795329640456#8b47e727",
+        "eventTimestamp": "2026-11-22T06:40:40.456Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "You asked me to create a task for an architecture review, but I need a due date to proceed. Could you please provide the due date for this task?"
+              },
+              "role": "ASSISTANT"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      },
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-A-R1209",
+        "sessionId": "v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39",
+        "eventId": "0000001795329634111#a1e0cbe1",
+        "eventTimestamp": "2026-11-22T06:40:34.111Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "Remind me: what task did I ask you to create earlier in this conversation?"
+              },
+              "role": "USER"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      },
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-A-R1209",
+        "sessionId": "v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39",
+        "eventId": "0000001795329620266#88438caf",
+        "eventTimestamp": "2026-11-22T06:40:20.266Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "I'm sorry, but I need a due date to create the task. Could you please specify when you would like to complete the architecture review?"
+              },
+              "role": "ASSISTANT"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      },
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-A-R1209",
+        "sessionId": "v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39",
+        "eventId": "0000001795329618607#38022a4c",
+        "eventTimestamp": "2026-11-22T06:40:18.607Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "What task did I just ask you to create?"
+              },
+              "role": "USER"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      },
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-A-R1209",
+        "sessionId": "v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39",
+        "eventId": "0000001795329612676#269f1658",
+        "eventTimestamp": "2026-11-22T06:40:12.676Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "What date would you like to set as the due date for the architecture review task?"
+              },
+              "role": "ASSISTANT"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      },
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-A-R1209",
+        "sessionId": "v2-remote-A-60155c7d-bc66-4ba0-b66e-cbb47091ef39",
+        "eventId": "0000001795329606451#de4faa35",
+        "eventTimestamp": "2026-11-22T06:40:06.451Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "Create a task for architecture review."
+              },
+              "role": "USER"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      }
+    ],
+    "USER-B-R1209/v2-remote-C-c2590e6a-0bb9-48f7-9886-906bfa885355": [
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-B-R1209",
+        "sessionId": "v2-remote-C-c2590e6a-0bb9-48f7-9886-906bfa885355",
+        "eventId": "0000001795329756258#81998a5f",
+        "eventTimestamp": "2026-11-22T06:42:36.258Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "I currently have no stored preferences for you regarding the output format. However, I can remember your preference for future sessions. If you have a specific format in mind, please let me know, and I will note it."
+              },
+              "role": "ASSISTANT"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      },
+      {
+        "memoryId": "ProductivityAgent_default_TaskMemory-LqBSxx75HT",
+        "actorId": "USER-B-R1209",
+        "sessionId": "v2-remote-C-c2590e6a-0bb9-48f7-9886-906bfa885355",
+        "eventId": "0000001795329750120#a2e49332",
+        "eventTimestamp": "2026-11-22T06:42:30.120Z",
+        "payload": [
+          {
+            "conversational": {
+              "content": {
+                "text": "What output format do I prefer?"
+              },
+              "role": "USER"
+            }
+          }
+        ],
+        "branch": {
+          "name": "main"
+        }
+      }
+    ]
+  }
+}

@@ -93,7 +93,12 @@ def agentcore_cmd() -> list[str]:
     return [exe]
 
 
+# V2 requires an explicit actor_id on every request; one fresh actor per run keeps runs isolated.
+RUN_ACTOR = f"V1-REGRESSION-{uuid.uuid4().hex[:8]}"
+
+
 def invoke(mode: str, session_id: str, payload: dict) -> tuple[dict, str]:
+    payload = {"actor_id": RUN_ACTOR, **payload}
     cmd = agentcore_cmd() + ["invoke", "--runtime", "agent", "--session-id", session_id,
                              "--payload", json.dumps(payload)]
     if mode == "local":
@@ -114,7 +119,7 @@ def main() -> int:
     args = ap.parse_args()
     session_id = args.session_id or f"demo-{args.mode}-{uuid.uuid4()}"
 
-    out_dir = ROOT / "evidence"
+    out_dir = ROOT / "evidence" / "v2"
     out_dir.mkdir(exist_ok=True)
     results, md = [], [
         f"# Demo run ({args.mode})",
@@ -146,9 +151,9 @@ def main() -> int:
         md += ["", "**Agent response:**", "", "> " + (res.get("response") or res.get("error", "")).replace("\n", "\n> "), "",
                f"_Check: {note}_", ""]
 
-    (out_dir / f"demo-{args.mode}.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
-    (out_dir / f"demo-{args.mode}.md").write_text("\n".join(md), encoding="utf-8")
-    print(f"\nSession: {session_id}\nEvidence: evidence/demo-{args.mode}.md")
+    (out_dir / f"regression-v1-{args.mode}.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+    (out_dir / f"regression-v1-{args.mode}.md").write_text("\n".join(md), encoding="utf-8")
+    print(f"\nSession: {session_id}\nEvidence: evidence/v2/regression-v1-{args.mode}.md")
     return 0 if passed_all else 1
 
 
