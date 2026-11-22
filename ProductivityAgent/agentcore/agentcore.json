@@ -13,11 +13,48 @@
       "codeLocation": "app/agent",
       "runtimeVersion": "PYTHON_3_13",
       "envVars": [
-        { "name": "MODEL_ID", "value": "apac.amazon.nova-lite-v1:0" },
-        { "name": "MAX_TOKENS", "value": "1024" },
-        { "name": "AGENT_TIMEZONE", "value": "UTC" },
-        { "name": "LOG_LEVEL", "value": "INFO" }
+        {
+          "name": "MODEL_ID",
+          "value": "apac.amazon.nova-lite-v1:0"
+        },
+        {
+          "name": "MAX_TOKENS",
+          "value": "1024"
+        },
+        {
+          "name": "AGENT_TIMEZONE",
+          "value": "UTC"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "value": "INFO"
+        }
       ]
     }
-  ]
+  ],
+  "memories": [
+    {
+      "name": "TaskMemory",
+      "description": "Productivity assistant - conversation events and extracted user preferences",
+      "eventExpiryDuration": 30,
+      "strategies": [
+        {
+          "type": "USER_PREFERENCE",
+          "name": "user_preferences",
+          "description": "Durable user preferences such as response format, working hours and prioritization style",
+          "namespaceTemplates": [
+            "/actor/{actorId}/preferences/"
+          ]
+        }
+      ]
+    }
+  ],
+  "knowledgeBases": [],
+  "credentials": [],
+  "evaluators": [],
+  "onlineEvalConfigs": [],
+  "agentCoreGateways": [],
+  "policyEngines": [],
+  "configBundles": [],
+  "harnesses": []
 }

@@ -1,31 +1,34 @@
-# Personal Productivity Assistant: Google ADK on Amazon Bedrock AgentCore
+# Memory-Enabled Personal Productivity Assistant (V2): Google ADK + Amazon Bedrock AgentCore Memory
 
-This is an AI agent that manages a user's tasks through natural language. It is
-built with **Google Agent Development Kit (ADK) 2.14**, uses **Amazon Nova Lite**
-on Amazon Bedrock as its model, and is deployed to **Amazon Bedrock AgentCore
-Runtime** as a **CodeZip** artifact with the **AgentCore CLI**.
+V2 extends the baseline task assistant ([docs/README-v1.md](docs/README-v1.md)) with **managed Amazon
+Bedrock AgentCore Memory**:
 
-> "Create a task to complete the architecture review by Friday and show me all my pending tasks."
+- **Short-term memory:** each user and assistant message is stored as a conversational event per
+  `actor_id` + `session_id`. A re-created agent process (new microVM, restart) rebuilds the
+  conversation from those events.
+- **Long-term memory:** a `USER_PREFERENCE` strategy extracts durable preferences, such as response
+  format, from the events in the background. Later sessions retrieve and apply them.
+- **Isolation:** every request carries an explicit `actor_id`. Preferences, events and tasks are scoped to it.
+- **Honest failure handling:** memory failures are reported, never hidden, and guards in code stop the
+  agent from claiming it saved or remembered something it did not.
 
-The model reads the request, picks the tools it needs (`create_task`,
-`list_tasks`, `complete_task`), runs them in order, and combines the results
-into one answer. No operation sequence is hardcoded.
+The original `create_task`, `list_tasks` and `complete_task` tools and multi-tool orchestration are
+unchanged. The V1 regression suite still passes 11/11.
 
 | Item | Value |
 |---|---|
-| Agent framework | Google ADK `google-adk` 2.14.1 (`LlmAgent` + `Runner`) |
-| Model | Amazon Nova Lite, APAC inference profile `apac.amazon.nova-lite-v1:0`, via ADK's `LiteLlm` adapter (Bedrock Converse API) |
-| Hosting | Amazon Bedrock AgentCore Runtime, CodeZip, `PYTHON_3_13`, HTTP protocol |
-| Tooling | AgentCore CLI 1.0.3 (`@aws/agentcore`), AWS CDK 2.1148, AWS CLI 2.40, uv |
+| Agent framework | Google ADK 2.14.1 (`LlmAgent`, `Runner`, `InMemorySessionService`) |
+| Model | Amazon Nova Lite `apac.amazon.nova-lite-v1:0` via ADK `LiteLlm` (Bedrock Converse) |
+| Memory integration | `bedrock-agentcore` 1.26.0 / boto3 1.43.127 data-plane APIs (`CreateEvent`, `ListEvents`, `RetrieveMemoryRecords`, `ListMemoryRecords`) |
+| Hosting | AgentCore Runtime, CodeZip, `PYTHON_3_13`, HTTP |
+| Tooling | AgentCore CLI 1.0.3, AWS CDK 2.1148.1, AWS CLI 2.40.4, uv |
 | Region | `ap-south-1` (Mumbai) |
-| Tagging | `Project: barclays` on every deployed resource (project-level tag in `agentcore/agentcore.json`) |
+| Tags | `Project: barclays` on the runtime, the memory and both IAM roles |
 
-> **Deviation from the brief:** the assignment names Strands Agents. At the
-> requester's direction this build uses **Google ADK** instead. Everything else
-> follows the brief: AgentCore CLI, CodeZip, AgentCore Runtime, observability.
-> AgentCore CLI 1.0.3 has no Google ADK template, so the project was scaffolded
-> with `agentcore create --template agent-python-minimal` and ADK was added on
-> top of it.
+> **Deviation from the brief:** the brief names Strands Agents. As in V1, this build uses **Google ADK**,
+> at the requester's direction. The brief allows "session manager or documented SDK integration"; this
+> uses the documented AgentCore Memory data-plane APIs through the AgentCore SDK's boto3 client (see
+> "Why not the SDK's `retrieve_memories`" below).
 
 ---
 
@@ -33,366 +36,434 @@ into one answer. No operation sequence is hardcoded.
 
 ```mermaid
 flowchart LR
-    U["User / AgentCore CLI<br/>agentcore invoke"] -->|"HTTPS + SigV4<br/>session id header"| EP["AgentCore Runtime endpoint<br/>(DEFAULT)"]
+    U["Caller<br/>agentcore invoke<br/>payload: actor_id + prompt<br/>header: session id"] --> RT
 
-    subgraph RT["AgentCore Runtime (ap-south-1): one microVM per session"]
-        EP --> APP["BedrockAgentCoreApp<br/>main.py  POST /invocations"]
-        APP --> RUN["Google ADK Runner<br/>+ InMemorySessionService<br/>(conversation history)"]
-        RUN --> AG["ADK LlmAgent<br/>productivity_assistant"]
-        AG <-->|"tool calls"| T["Tools<br/>create_task · list_tasks · complete_task"]
-        T --> S[("In-memory TaskStore<br/>per session")]
-        AG -. "on_tool_error_callback" .-> T
+    subgraph RT["AgentCore Runtime (one microVM per session)"]
+        M["main.py entrypoint<br/>identity + orchestration"]
+        A["Google ADK LlmAgent<br/>(Nova Lite)"]
+        T["Task tools<br/>create / list / complete"]
+        TS[("In-process TaskStore<br/>per actor - NOT persistent")]
+        G["memory.py<br/>MemoryGateway + honesty guards"]
+        M --> A
+        A <--> T --> TS
+        M <--> G
     end
 
-    AG <-->|"LiteLLM → Converse API"| BR["Amazon Bedrock<br/>Nova Lite (apac profile)"]
-    APP -. "OTEL logs + spans<br/>(opentelemetry-instrument)" .-> CW["CloudWatch Logs<br/>+ Transaction Search / X-Ray"]
-
-    subgraph DEP["Deployment (agentcore deploy)"]
-        CLI["AgentCore CLI"] --> CDK["AWS CDK app<br/>agentcore/cdk"]
-        CDK --> CFN["CloudFormation stack<br/>AgentCore-ProductivityAgent-default"]
-        CDK --> S3["CDK assets S3 bucket<br/>(CodeZip artifact)"]
+    subgraph MEM["AgentCore Memory: ProductivityAgent_default_TaskMemory"]
+        EV[("Short-term events<br/>actor/session, 30-day expiry")]
+        STRAT["USER_PREFERENCE strategy<br/>(async extraction + consolidation)"]
+        LT[("Long-term records<br/>/actor/{actorId}/preferences/")]
+        EV -- "async, about 70 s" --> STRAT --> LT
     end
-    CFN --> RT
-    S3 --> RT
+
+    G -- "(1) ListEvents: restore history<br/>when the process has no session" --> EV
+    G -- "(2) CreateEvent USER<br/>(4) CreateEvent ASSISTANT" --> EV
+    G -- "(3) RetrieveMemoryRecords<br/>namespace = this actor only" --> LT
+    A <--> BR["Amazon Bedrock<br/>Nova Lite"]
+    RT -. "logs, OTEL spans" .-> CW["CloudWatch Logs<br/>+ Transaction Search"]
 ```
 
-### Request lifecycle (what happens on `agentcore invoke`)
+### Per-request flow (`main.py`)
 
-1. The CLI signs a `InvokeAgentRuntime` request with SigV4 and sends the
-   payload `{"prompt": ...}` with a runtime session id (33 characters or more).
-2. AgentCore Runtime sends the session to a dedicated microVM, starting one
-   on first use (cold start). Later requests with the same session id reach
-   the **same microVM**. That is why in-memory state (conversation history
-   and tasks) survives between turns of one session.
-3. `BedrockAgentCoreApp` receives `POST /invocations` and calls the
-   `@app.entrypoint` handler with `context.session_id`.
-4. The handler maps the AgentCore session id to an ADK session and runs
-   `Runner.run_async`. ADK builds the prompt from the dynamic instruction
-   (today's date plus a 7-day calendar), the conversation history and the tool
-   schemas, then calls Nova Lite through LiteLLM and the Bedrock Converse API.
-5. Nova returns tool calls. ADK runs them, sends the results back, and loops
-   until the model produces a final text answer.
-6. The handler returns `{response, tool_calls, reasoning, session_id, model}`.
-   Logs and OTEL spans (`invoke_agent`, `generate_content`, `execute_tool`)
-   flow to CloudWatch.
+| Step | What happens | API | Path |
+|---|---|---|---|
+| 0 | Validate `actor_id` (required, no default identity). Session id = runtime session header | n/a | n/a |
+| 1 | If this process has **no ADK session** for (actor, session), load the last turns from Memory and replay them into a new ADK session | `ListEvents` | short-term **read** |
+| 2 | Save the user message as an event. Long-term extraction reads these events | `CreateEvent` (role `USER`) | event **write** |
+| 3 | Semantic search over **this actor's** preference namespace with the prompt as query (top 5, newest first) | `RetrieveMemoryRecords` | long-term **read** |
+| 4 | Run the ADK agent. The memory block (records plus status: OK, EMPTY or UNAVAILABLE, and whether the message was saved) goes into the dynamic instruction | Bedrock Converse | n/a |
+| 5 | Apply code guards (below), then save the assistant reply as an event | `CreateEvent` (role `ASSISTANT`) | event **write** |
 
-### Responsibilities: framework vs. platform
+The response includes a `memory` object with every memory operation's result, event IDs, the retrieved
+records and the namespace, so each turn shows what memory did.
 
-| Google ADK (agent framework) | AgentCore Runtime (platform) |
+### Code-level guards
+
+Nova Lite does not always follow instructions, so these behaviours are enforced in code and covered by
+unit tests:
+
+| Guard | Problem it prevents | Where |
+|---|---|---|
+| Write-honesty | Saving the message failed, but the reply says "I've noted your preference…" (MEM-09). Claim sentences are removed and an explicit "couldn't save" notice is added | `memory.enforce_write_honesty` |
+| Retrieval-honesty | Retrieval failed, but the reply says "you have no stored preferences" (false: it could not check). Preference sentences are removed and an "unavailable" notice is added | `memory.enforce_retrieval_honesty` |
+| Grounding | The reply shows task IDs that no tool returned this turn, i.e. task status recalled from memory text (MEM-10). The turn is retried once, with an instruction to call `list_tasks` | `agent.ungrounded_task_ids` + `run_turn` |
+| Empty reply | The model ends a turn with only internal `<thinking>` text. It is retried once for a visible reply | `agent.run_turn` |
+| Output hygiene | Inline `<thinking>` or `<reply>` tags, or echoed internal memory-context lines, reach the user | `agent.split_inline_thinking` |
+| Due-date grounding (V1) | The model invents a due date the user never gave | `tools.create_task` |
+
+### Responsibilities
+
+| Layer | Owns |
 |---|---|
-| Agent loop: prompt assembly, model calls, tool-call parsing and execution, retries on tool errors | Serverless hosting and scaling; session-to-microVM isolation |
-| Tool schemas generated from Python signatures and docstrings | Endpoint, SigV4/IAM (or JWT) inbound auth |
-| Conversation state (`InMemorySessionService`) | Execution role: temporary AWS credentials for Bedrock calls |
-| Callbacks (`on_tool_error_callback`), OTEL spans for agent, LLM and tool | Log and trace delivery to CloudWatch; versioning and endpoints |
+| **Google ADK** | Agent loop (prompt → model → tool calls → answer), in-process session (`InMemorySessionService`), tool schemas, tool-error callback, OTEL spans |
+| **This app** (`main.py`, `memory.py`) | Identity mapping (`actor_id`, session id), when to read and write Memory, replaying history into ADK, putting retrieved preferences into the prompt, honesty and grounding guards |
+| **AgentCore Runtime** | Hosting, one microVM per session, SigV4/IAM inbound auth, execution-role credentials, logs and traces |
+| **AgentCore Memory** | Durable event storage (30-day expiry), asynchronous preference extraction and consolidation, semantic retrieval by namespace |
 
 ---
 
-## 2. Project layout
+## 2. Memory configuration (MEM-01)
+
+Provisioned as code in `agentcore/agentcore.json` (`agentcore add memory …`) and deployed by CDK:
+
+```json
+"memories": [{
+  "name": "TaskMemory",
+  "eventExpiryDuration": 30,
+  "strategies": [{
+    "type": "USER_PREFERENCE",
+    "name": "user_preferences",
+    "namespaceTemplates": ["/actor/{actorId}/preferences/"]
+  }]
+}]
+```
+
+Reproduce with:
+
+```bash
+agentcore add memory --name TaskMemory --event-expiry-duration 30 \
+  --strategies '[{"type":"USER_PREFERENCE","name":"user_preferences","description":"Durable user preferences such as response format, working hours and prioritization style","namespaceTemplates":["/actor/{actorId}/preferences/"]}]'
+agentcore deploy --yes --region ap-south-1
+```
+
+| Setting | Value |
+|---|---|
+| Memory ID | `ProductivityAgent_default_TaskMemory-LqBSxx75HT` (status `ACTIVE`) |
+| Strategy | `user_preferences-opRIaKFLR5`, type `USER_PREFERENCE` |
+| Long-term namespace | `/actor/{actorId}/preferences/`, actor-scoped. The trailing slash stops `USER-A` prefix-matching `USER-AB` |
+| Event retention | 30 days (`eventExpiryDuration`) for short-term events. Long-term records persist until deleted |
+| Encryption | AWS-owned key (default). Production: a customer-managed KMS key (`--encryption-key-arn`) |
+| Runtime discovery | The CDK construct injects `MEMORY_TASKMEMORY_ID` and `MEMORY_TASKMEMORY_ARN` into the runtime environment (nothing hardcoded) |
+
+**Why only `USER_PREFERENCE`:** the brief requires it. `SEMANTIC` was deliberately left out: it would
+extract facts such as "user created a task to review the budget", which could later be recalled as if
+they were current task status. That is exactly the confusion MEM-10 forbids. Task state comes only from
+the task tools.
+
+### Identity design
+
+| Identifier | Source | Scopes |
+|---|---|---|
+| `actor_id` | Request payload, **required** and validated (`[A-Za-z0-9][A-Za-z0-9_\-.@]{0,99}`). There is no default actor | Long-term namespace, events, task store, ADK session `user_id` |
+| `session_id` | AgentCore runtime session header (`agentcore invoke --session-id`, 33 characters or more) | Events, ADK session, runtime microVM |
+
+> **Trust boundary:** in this POC the caller asserts `actor_id`. Isolation is only as strong as that
+> mapping. In production, derive `actor_id` from a verified identity (for example the JWT `sub` claim via
+> a runtime JWT authorizer) and never accept it from the request body.
+
+### IAM (least privilege, generated by the AgentCore CDK construct)
+
+Runtime execution role, Memory statements (from the deployed CloudFormation template):
+
+| Actions | Resource | Condition |
+|---|---|---|
+| `RetrieveMemoryRecords`, `ListMemoryRecords` | this memory ARN | `bedrock-agentcore:namespace` / `namespacePath` StringLike `/actor/*/preferences/` |
+| `CreateEvent`, `ListEvents`, `GetEvent`, `DeleteEvent`, `ListSessions`, `ListActors`, `GetMemory`, `GetMemoryRecord`, `DeleteMemoryRecord` | this memory ARN | none (these actions do not support namespace conditions) |
+
+Note that the role can read **any** actor's records under `/actor/*/preferences/`. Per-user isolation is
+enforced by the app's identity mapping, not by IAM. For hard per-user isolation at the IAM level, give
+each caller scoped credentials with the actor ID in the namespace condition.
+
+The memory also has its own service role (`ApplicationMemoryTaskMemoryServiceRole…`), created by CDK.
+
+The developer IAM user (`mojahid`) was verified to have `CreateEvent`, `ListEvents`,
+`RetrieveMemoryRecords`, `ListMemoryRecords`, `ListActors`, `DeleteEvent` and `StopRuntimeSession`, which
+local development and the demo need.
+
+---
+
+## 3. Project layout (changes from V1)
 
 ```
 ProductivityAgent/
-├── agentcore/
-│   ├── agentcore.json        # project config: runtime (CodeZip, PYTHON_3_13), env vars, tags
-│   ├── aws-targets.json      # deployment target (account + ap-south-1), created on first deploy
-│   ├── .env.local            # local-only env for `agentcore dev` (gitignored)
-│   └── cdk/                  # CDK app generated by the CLI (AgentCoreApplication construct)
-├── app/agent/                # the CodeZip payload
-│   ├── main.py               # AgentCore entrypoint (BedrockAgentCoreApp)
-│   ├── agent.py              # ADK LlmAgent, Nova via LiteLlm, dynamic instruction, runner
-│   ├── tools.py              # create_task / list_tasks / complete_task, error handling, failure injection
-│   ├── task_store.py         # in-memory TaskStore, validation, typed errors
-│   ├── tests/                # pytest unit tests (no LLM, no AWS)
-│   └── pyproject.toml        # deps: google-adk, litellm, bedrock-agentcore, aws-opentelemetry-distro
-├── scripts/run_demo.py       # runs every demo scenario through `agentcore invoke` (local or remote)
-└── evidence/                 # demo transcripts, logs and traces captured from real runs
+├── agentcore/agentcore.json      # + memories[TaskMemory] (USER_PREFERENCE, 30-day events)
+├── agentcore/.env.local          # + MEMORY_TASKMEMORY_ID for local dev (gitignored)
+├── app/agent/
+│   ├── main.py                   # V2: actor_id, history restore, event writes, retrieval, guards
+│   ├── memory.py                 # NEW: MemoryGateway (failure-aware), honesty guards, actor validation
+│   ├── agent.py                  # V2: memory rules, memory context in instruction, history replay,
+│   │                             #     grounding / empty-reply retries, output hygiene
+│   ├── tools.py                  # V2: task store keyed by actor (still in-process only)
+│   ├── task_store.py             # unchanged
+│   └── tests/                    # 34 unit tests (+ test_memory.py, test_agent_memory.py)
+├── scripts/run_demo_v2.py        # NEW: V2 memory scenarios via agentcore CLI, polls extraction
+├── scripts/run_demo.py           # V1 scenarios, now a regression suite (sends an actor_id)
+├── evidence/v2/                  # V2 transcripts, memory inspections, logs and traces
+├── evidence/v1/                  # V1 evidence (archived)
+└── docs/README-v1.md             # V1 README (archived)
 ```
 
-### Design notes
-
-- **Tools return structured results** (`{"status": "success"|"error", ...}`).
-  Expected errors (validation, unknown id) are caught in the tool and
-  returned as data, so the model can explain them.
-- **Unexpected tool exceptions** are converted by ADK's `on_tool_error_callback`
-  (`tools.handle_tool_error`) into `{"status":"error","error_type":"tool_failure"}`.
-  The agent loop never crashes, and the model is told explicitly that "The
-  operation was NOT performed".
-- **Due-date grounding guard (in code, not just the prompt):** `create_task`
-  needs `user_due_date_phrase`, the date words exactly as the user wrote them.
-  The tool checks that those words appear in the user's messages in this
-  session. Without it, Nova Lite sometimes invented a date ("tomorrow") for
-  "Create a task to call the vendor".
-- **Relative dates:** each turn's instruction includes today's date and the
-  next 7 days with weekday names. The LLM turns "Friday" into `YYYY-MM-DD`,
-  and `TaskStore` validates it deterministically: ISO format, real calendar
-  date, not in the past.
-- **State scope:** tasks and history are kept per session id. On AgentCore
-  Runtime that matches the per-session microVM. Data disappears when the
-  session ends, which the brief explicitly allows.
-- **Failure injection (demo scenario 6):** send `"simulate_failure": ["list_tasks"]`
-  (any of the three tools) in the payload. The flag lasts for the session until
-  `"simulate_failure": []` is sent.
-
 ---
 
-## 3. Prerequisites
+## 4. Prerequisites and setup
 
-| Tool | Version used | Install |
-|---|---|---|
-| AWS CLI v2 | 2.40.4 | https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html |
-| Node.js | 20+ (26.13 used) | `winget install OpenJS.NodeJS.LTS` |
-| AgentCore CLI | 1.0.3 | `npm install -g @aws/agentcore` |
-| AWS CDK CLI | 2.1148 | `npm install -g aws-cdk` |
-| uv | 0.13+ | `irm https://astral.sh/uv/install.ps1 \| iex` |
-| Python | 3.13 (uv downloads it automatically) | n/a |
+The V1 prerequisites ([docs/README-v1.md §3](docs/README-v1.md)) still apply: AWS CLI v2, Node.js 20+,
+`npm install -g @aws/agentcore aws-cdk`, uv, CDK bootstrap with `--tags Project=barclays`, and the
+`mojahid_agent` profile.
 
-**AWS account setup (AC-01)**
-
-1. Credentials: this build uses an IAM-user access-key profile:
-   ```powershell
-   aws configure --profile mojahid_agent       # access key, secret, region ap-south-1
-   aws sts get-caller-identity --profile mojahid_agent
+V2 additions:
+1. Add the memory to the project (command in §2), or use the existing `agentcore.json`.
+2. Run `agentcore deploy --yes --region ap-south-1`. This creates the Memory resource and binds it to
+   the runtime.
+3. For local development, add the memory ID to `agentcore/.env.local`:
    ```
-2. Model access: confirm that Nova Lite is invocable in the region:
-   ```bash
-   aws bedrock-runtime converse --model-id apac.amazon.nova-lite-v1:0 \
-     --messages '[{"role":"user","content":[{"text":"Reply with OK"}]}]' \
-     --inference-config '{"maxTokens":10}' --profile mojahid_agent --region ap-south-1
-   ```
-3. CDK bootstrap: run once per account and region, **with the project tag**,
-   because the account's IAM policy requires `Project: barclays` on created
-   resources:
-   ```powershell
-   cdk bootstrap aws://<ACCOUNT_ID>/ap-south-1 --profile mojahid_agent --tags Project=barclays
+   MEMORY_TASKMEMORY_ID=ProductivityAgent_default_TaskMemory-LqBSxx75HT
    ```
 
 ---
 
-## 4. Local development and testing (AC-10)
+## 5. Run and test locally
 
 ```powershell
 cd ProductivityAgent
+cd app/agent; uv run pytest -q; cd ../..          # 34 passed (no AWS, no LLM)
 $env:AWS_PROFILE = "mojahid_agent"
-
-# Unit tests: task store, validation, tools, error handler (no LLM calls)
-cd app/agent; uv run pytest -q; cd ../..          # 19 passed
-
-# Start the local AgentCore dev server (uvicorn on :8080, local OTEL collector)
 agentcore dev --agent agent --mode headless --region ap-south-1
 ```
 
-`agentcore/.env.local` provides `AWS_PROFILE`, `AWS_REGION`, `MODEL_ID` and
-`AGENT_TIMEZONE` to the local process.
-
-In a second terminal:
+In a second terminal (Git Bash, or use the script):
 
 ```bash
-# single call (Git Bash / macOS / Linux; see the Windows note below)
-agentcore invoke --local --runtime agent --session-id my-local-session-0000000000000001 \
-  --payload '{"prompt":"Create a task to complete the architecture review by Friday."}'
+agentcore invoke --local --runtime agent --session-id my-session-a-00000000000000000000001 \
+  --payload '{"actor_id":"USER-A","prompt":"Remember that I prefer short bullet-point task summaries."}'
 
-# all demo scenarios in one session, with automatic checks; writes evidence/demo-local.md
-python scripts/run_demo.py --mode local
+python scripts/run_demo_v2.py --mode local     # all V2 memory scenarios, about 6 min (waits for extraction)
+python scripts/run_demo.py --mode local        # V1 regression (tools and orchestration)
 ```
 
-> **Windows note:** Windows PowerShell 5.1 strips the inner quotes from JSON
-> passed to native commands, so `--payload '{"prompt":...}'` reaches the agent
-> as invalid JSON. Use Git Bash, PowerShell 7, or `scripts/run_demo.py`, which
-> calls the CLI's Node entrypoint directly.
->
-> If `agentcore dev` stops when its terminal's stdin closes (for example, run
-> from a script), keep stdin open: `tail -f /dev/null | agentcore dev ...`.
-> The hot reloader sometimes misses changes on Windows; restart `agentcore dev`
-> after you edit code.
+Restart `agentcore dev` after code changes; the Windows reloader is unreliable.
 
----
+## 6. Deploy (CodeZip) and invoke remotely (MEM-11)
 
-## 5. Deploy to AgentCore Runtime (AC-11)
-
-```powershell
-agentcore deploy --region ap-south-1 --yes
+```bash
+agentcore deploy --yes --region ap-south-1
 agentcore status --region ap-south-1
+python scripts/run_demo_v2.py --mode remote    # same scenarios on AgentCore Runtime
+python scripts/run_demo.py --mode remote       # V1 regression in the cloud
 ```
 
-`agentcore deploy`:
-
-1. creates the `default` target in `agentcore/aws-targets.json` (account + region)
-2. builds the **CodeZip** artifact: installs `app/agent` dependencies for
-   linux/arm64 Python 3.13 and zips them with the code
-3. synthesizes the CDK app and publishes the zip to the CDK assets bucket
-4. enables CloudWatch **Transaction Search**, which traces need
-5. deploys the CloudFormation stack `AgentCore-ProductivityAgent-default`
-
-The runtime starts with
-`opentelemetry-instrument main.py`, so ADK's and LiteLLM's OTEL spans are
-exported with no code changes.
-
----
-
-## 6. Remote invocation (AC-12)
-
-```bash
-SESSION=demo-remote-$(uuidgen)    # 33+ chars; reuse it to continue the conversation
-agentcore invoke --runtime agent --session-id $SESSION --payload '{"prompt":"Create a task to complete the architecture review by Friday."}'
-agentcore invoke --runtime agent --session-id $SESSION --payload '{"prompt":"Show me all my pending tasks."}'
-agentcore invoke --runtime agent --session-id $SESSION --payload '{"prompt":"Mark task TASK-001 as completed."}'
-
-# simulate a tool failure, then turn it off again
-agentcore invoke --runtime agent --session-id $SESSION --payload '{"prompt":"Show me all my pending tasks.","simulate_failure":["list_tasks"]}'
-agentcore invoke --runtime agent --session-id $SESSION --payload '{"prompt":"Show me my pending tasks.","simulate_failure":[]}'
-
-# full scenario suite against the cloud deployment; writes evidence/demo-remote.md
-python scripts/run_demo.py --mode remote
-```
-
-Response shape:
+Request payload:
 
 ```json
 {
-  "response": "I have created a task for you: ...",
-  "tool_calls": [{"tool": "create_task", "args": {...}, "result": {"status": "success", ...}}],
-  "reasoning": ["<model reasoning, kept out of the user answer>"],
-  "session_id": "...",
-  "model": "apac.amazon.nova-lite-v1:0"
+  "actor_id": "USER-A",
+  "prompt": "Show my tasks in my preferred format.",
+  "simulate_failure": ["memory_retrieve"],
+  "simulate_restart": true
 }
+```
+
+- `actor_id` is required.
+- `simulate_failure` is optional. Memory values are `memory_retrieve` and `memory_write`, and apply to
+  that request only. Tool values (`list_tasks`, `create_task`, `complete_task`) stay on for the session
+  until `[]` is sent.
+- `simulate_restart` is optional and for local use only: it drops this process's state for the
+  actor and session.
+
+To re-create the agent process in the cloud (a new microVM for the same session):
+
+```bash
+aws bedrock-agentcore stop-runtime-session --region ap-south-1 \
+  --agent-runtime-arn arn:aws:bedrock-agentcore:ap-south-1:590183725128:runtime/ProductivityAgent_default_agent-dxt08oE1hB \
+  --runtime-session-id <session-id>
 ```
 
 ---
 
 ## 7. Demo scenarios and acceptance criteria
 
-All results come from real runs: `evidence/demo-local.md` (local dev server)
-and `evidence/demo-remote.md` (deployed runtime). Both runs passed **11 of 11**.
+Each run uses fresh actors (`USER-A-<run>`, `USER-B-<run>`), so earlier runs cannot affect the result.
+Long-term extraction is **polled** with `agentcore memory record list`, never assumed. Every turn is also
+checked for task IDs that no tool returned (MEM-10) and for leaked internal tags or context.
 
-| Scenario | Prompt | Tools the agent chose | AC | Local | Cloud |
-|---|---|---|---|---|---|
-| 1 Create a task | "Create a task to complete the architecture review by Friday." | `create_task` (Friday resolved to 2026-11-20) | AC-03 | PASS | PASS |
-| 2 Pending tasks | "Show me all my pending tasks." | `list_tasks(pending)` | AC-04 | PASS | PASS |
-| 3 Multi-step | "Create a task for reviewing the AgentCore architecture due next Monday and then show me all my pending tasks." | `create_task` + `list_tasks` in one turn | AC-06 | PASS | PASS |
-| 4 Complete | "Mark task TASK-001 as completed." | `complete_task` | AC-05 | PASS | PASS |
-| 5 Unknown id | "Complete task TASK-999." | `complete_task` → `not_found`, reported | AC-08 | PASS | PASS |
-| 5b Missing date | "Create a task to call the vendor." | no tool call; asks for the due date | AC-08 | PASS | PASS |
-| 5c Invalid date | "...due on 2026-02-30." | `create_task` → `validation_error`, reported | AC-08 | PASS | PASS |
-| Context | "Also mark the AgentCore architecture review task I created earlier as completed, then show me everything..." | `complete_task(TASK-002)` + `list_tasks(all)` | AC-07 | PASS | PASS |
-| 6 Tool failure | "Show me all my pending tasks." + `simulate_failure:[list_tasks]` | `list_tasks` → `tool_failure`, reported honestly | AC-09 | PASS | PASS |
-| 6b Write failure | "Create a task to prepare the demo slides by Friday." + `simulate_failure:[create_task]` | `create_task` → `tool_failure`, no false success claim | AC-09 | PASS | PASS |
-| 6c Recovery | `simulate_failure: []` | `list_tasks` succeeds | AC-09 | PASS | PASS |
-| 7 Cloud | all of the above through AgentCore Runtime | n/a | AC-11, AC-12 | n/a | PASS |
+| # | Scenario (actor / session) | Input | Evidence of success | AC |
+|---|---|---|---|---|
+| 1a | USER-A / A | "Create a task for architecture review." | No task created; agent asks for the due date (no invented date) | MEM-10 |
+| 1b | USER-A / A | "What task did I just ask you to create?" | Answers about "architecture review" from session context | MEM-03 |
+| 1c | USER-A / A, **process re-created** (`StopRuntimeSession` in the cloud, `simulate_restart` locally) | "Remind me: what task did I ask you to create earlier…?" | `history_source=ok`, `history_restored=4` from `ListEvents`; recalls the task | MEM-03, MEM-04 |
+| 2 | USER-A / A | "Remember that I prefer short bullet-point task summaries." | `CreateEvent` id returned; preference acknowledged; record extracted after about 67 to 72 s | MEM-04, MEM-05 |
+| 3 | USER-A / **new session B** | create 2 tasks, then "Show my tasks in my preferred format." | `retrieval=ok`; `list_tasks` called; bullet output | MEM-06, MEM-10 |
+| 4 | **USER-B** / C | "What output format do I prefer?" | `retrieval=empty`; USER-B namespace has 0 records; reply reveals nothing about USER-A | MEM-07 |
+| 5 | USER-A / B | "From now on, use a table rather than bullet points." | Event saved; the strategy **consolidated** the record into "prefers tables … superseding the earlier bullet-point preference" (about 69 to 85 s) | MEM-08 |
+| 6 | USER-A / **new session D** | create task, then "List my pending tasks using my preferred format." | `list_tasks` called; table output (latest preference) | MEM-08, MEM-10 |
+| 7a | USER-A / E, `simulate_failure: memory_retrieve` | "What output format do I prefer?" | `retrieval=unavailable`; reply says it cannot access stored preferences; no preference claimed (guard) | MEM-09 |
+| 7b | USER-A / E, `simulate_failure: memory_write` | "Remember that I usually plan my work in the morning." | `user_event=unavailable`; reply says it could not save; no "noted" claim (guard) | MEM-09 |
+| 8 | all of the above on AgentCore Runtime | n/a | `evidence/v2/demo-remote.md` | MEM-11 |
 
-Reliability check: the multi-step prompt (scenario 3) produced `create_task` and
-`list_tasks` in **8 of 8** fresh sessions.
+**Results (final code, runtime version 4, 2026-11-22):**
+
+| Suite | Local (`agentcore dev`) | AgentCore Runtime |
+|---|---|---|
+| V2 memory scenarios (`run_demo_v2.py`) | **13/13 PASS** | **13/13 PASS** |
+| V1 regression: task tools and orchestration (`run_demo.py`) | **11/11 PASS** | **11/11 PASS** |
+| Unit tests (`pytest`) | 34 passed | n/a |
+
+Measured long-term extraction latency: **67 to 72 s** for a new preference and **68 to 85 s** for an
+update, across 4 runs. In the cloud run, `StopRuntimeSession` returned HTTP 200, and the next request with
+the same session ID ran in a **new microVM** that restored 4 messages from AgentCore Memory events.
+
+### Evidence index (`evidence/v2/`)
+
+| File | Contents |
+|---|---|
+| `demo-local.md` / `demo-remote.md` (+ `.json`) | Each turn: request, tool calls, memory status (history, event ID, retrieval and records), reply, check result |
+| `memory-inspection-local.json` / `-remote.json` | Raw `agentcore memory record list` for USER-A and USER-B, plus `memory event list` for session A (USER-A) and session C (USER-B) |
+| `regression-v1-local.md` / `-remote.md` | V1 scenarios against the V2 agent |
+| `logs-memory-ops-remote.txt` | Runtime logs filtered to `memory.*` operations (create_event, list_events, retrieve, with IDs) |
+| `logs-errors-remote.txt` | ERROR logs: the injected `RetrieveMemoryRecords` / `CreateEvent` failures |
+| `logs-guards-remote.txt` | WARNING logs: honesty guards applied (write / read) |
+| `traces-list-remote.txt` | Trace IDs per invocation and session (`agentcore traces runtime get <id>` for detail) |
+
+The remote log files cover the last two cloud runs (actors `USER-A-R1200` and `USER-A-R1209`). The
+remote demo transcript is from the final run (`R1209`).
 
 ---
 
-## 8. Logging and observability (AC-13)
+## 8. Memory inspection and observability (MEM-04, MEM-05, MEM-12)
 
 ```bash
-# Logs (CloudWatch: /aws/bedrock-agentcore/runtimes/<runtime-id>-DEFAULT)
-agentcore logs runtime --name agent --since 30m                       # everything
-agentcore logs runtime --name agent --since 30m --query '"tool_call"'  # each tool call with args and result
-agentcore logs runtime --name agent --since 30m --level error          # error investigation
+M=ProductivityAgent_default_TaskMemory-LqBSxx75HT
+agentcore memory get --id $M                                                       # resource + strategies
+agentcore memory session list --id $M --actor-id USER-A-<run>                      # sessions of an actor
+agentcore memory event list   --id $M --actor-id USER-A-<run> --session-id <sid> --include-payloads
+agentcore memory record list  --id $M --namespace /actor/USER-A-<run>/preferences/  # long-term records
 
-# Traces (OTEL via CloudWatch Transaction Search)
+agentcore logs runtime --name agent --since 1h --query '"memory."'   # every memory operation
+agentcore logs runtime --name agent --since 1h --level error        # memory / tool failures
 agentcore traces runtime list --name agent --since 1h
-agentcore traces runtime get <trace-id> --name agent --since 2h --output trace.json
 ```
 
-What gets captured:
+The demo writes `evidence/v2/memory-inspection-<mode>.json`, a raw dump of `memory record list` for
+both actors and `memory event list` for the key sessions.
 
-- **Application logs:** every invocation (session, model, prompt) and every
-  tool call with its arguments and result (`productivity_agent` logger).
-  Tool failures are logged at ERROR with the exception.
-- **ADK GenAI telemetry:** `gen_ai.agent.name`, `gen_ai.conversation.id`
-  (= session id), and token usage per model call.
-- **Spans** (stored in the runtime log group's `spans` stream, and in the CloudWatch
-  console under *GenAI Observability → Bedrock AgentCore*). Real trace for
-  scenario 3 (`evidence/trace-S3-spans.json`):
+What gets logged (logger `productivity_agent.memory`):
 
-  ```
-  1444 ms  POST /invocations
-  1441 ms    invoke_workflow productivity_assistant
-  1425 ms      invoke_agent productivity_assistant
-   634 ms        generate_content nova-lite   (in=2025 tok, out=62)   → decides create_task + list_tasks
-     1 ms        execute_tool create_task
-     0 ms        execute_tool list_tasks
-   783 ms        generate_content nova-lite   (in=2453 tok, out=99)   → final answer
-  ```
+| Log line | Meaning |
+|---|---|
+| `memory.create_event ok actor=… session=… role=USER event=…` | Event written |
+| `memory.list_events ok … messages=N` | History read (process had no local session) |
+| `memory.retrieve ok actor=… namespace=/actor/…/preferences/ records=N ids=[…]` | Long-term retrieval, with record IDs |
+| `memory.retrieve FAILED …` / `memory.create_event FAILED …` (ERROR) | Memory failure, with the exception |
+| `memory honesty guard applied (write=… read=…)` (WARNING) | A guard changed the reply |
+| `reply mentions tasks … not returned by a tool this turn; grounding retry` (WARNING) | Grounding guard fired |
 
-- **Error investigation example:** `evidence/logs-errors.txt` shows the
-  simulated `list_tasks` outage at ERROR level, with the tool args, the
-  session id and the trace id, which links it to the full trace.
+A sample record as stored by the `USER_PREFERENCE` strategy (`content.text` is JSON):
 
-The runtime log group retention was set to **14 days**
-(`aws logs put-retention-policy`); by default it never expires.
+```json
+{"context":"Summarizing tasks or reviewing task lists",
+ "preference":"Prefers short bullet-point task summaries",
+ "categories":["task summaries","formatting","communication style"]}
+```
+
+After the update in scenario 5, the **same namespace holds one consolidated record**, for example:
+*"Prefers task lists shown as a table rather than bullet points (as of 2026-11-22); previously preferred
+short bullet-point task summaries"*.
 
 ---
 
-## 9. AWS resources provisioned
+## 9. Engineering notes
 
-All resources are in account `590183725128`, region `ap-south-1`.
+**Short-term vs long-term memory**
 
-| Resource | Name / ID | Created by | Tag `Project=barclays` |
-|---|---|---|---|
-| AgentCore Runtime (+ `DEFAULT` endpoint) | `ProductivityAgent_default_agent-udnE0mDtwm` | stack `AgentCore-ProductivityAgent-default` | yes (verified) |
-| IAM execution role + inline policy | `AgentCore-ProductivityAge-ApplicationRuntimeAgentRu-*` | same stack | applied by CDK project tags (not readable: the IAM user lacks `iam:ListRoleTags`) |
-| CloudFormation stack | `AgentCore-ProductivityAgent-default` | `agentcore deploy` | resources tagged |
-| CloudWatch log group | `/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT` (14-day retention) | AgentCore service | n/a (service-created) |
-| CloudWatch Transaction Search | account setting (X-Ray → CloudWatch Logs `aws/spans`) | `agentcore deploy` | n/a (account setting) |
-| CDK bootstrap stack `CDKToolkit` | S3 `cdk-hnb659fds-assets-590183725128-ap-south-1`, ECR `cdk-hnb659fds-container-assets-…`, 5 IAM roles, SSM `/cdk-bootstrap/hnb659fds/version` | `cdk bootstrap` | yes (stack tag) |
+| | Short-term (events) | Long-term (records) |
+|---|---|---|
+| What is stored | Raw `USER` / `ASSISTANT` messages | Extracted preference JSON |
+| Written by | The app (`CreateEvent`), synchronously, every turn | The `USER_PREFERENCE` strategy, asynchronously |
+| Available | Immediately | About 65 to 85 s later in our runs (eventually consistent) |
+| Read by | `ListEvents` (exact actor and session) | `RetrieveMemoryRecords` (semantic, per namespace) |
+| Scope | One actor's session | One actor, all sessions |
+| Lifetime | 30 days (`eventExpiryDuration`) | Until deleted (`DeleteMemoryRecord`) |
 
-Execution role permissions, generated by the CLI's CDK construct: trust
-`bedrock-agentcore.amazonaws.com` with `aws:SourceAccount` and `aws:SourceArn`
-conditions (confused-deputy protection); `bedrock:InvokeModel*` on
-inference profiles and foundation models; CloudWatch Logs, X-Ray and metrics;
-workload identity tokens; read access to the CDK assets bucket.
+**Asynchronous extraction:** a preference stated in session A is not instantly available to session B.
+Within session A it still works, because the history is in context. The demo polls; the agent says
+"available in future sessions once processing completes" and never claims instant recall.
+
+**Retrieval limits:** semantic top 5 per turn, using the prompt as the query. A preference that isn't
+semantically close to the request may not be retrieved; that is acceptable for style preferences, and
+`list_preferences` exists for full inspection. Records are rendered newest first, and the instruction
+says the most recent preference wins.
+
+**Conflicts and updates:** the strategy's consolidation merged "bullets" and "tables" into one record
+that states which supersedes which. If two conflicting records ever co-exist, the prompt lists them
+newest first and rule M4 tells the model to follow the latest and say so. An explicit instruction in the
+current message always overrides stored preferences (rule M3).
+
+**Memory vs task persistence:** AgentCore Memory is **not** a task database. The task store is still in
+process (now keyed by actor). Locally, tasks survive across a user's sessions while `agentcore dev` keeps
+running. On AgentCore Runtime **each session is a separate microVM, so tasks do not carry over between
+sessions or restarts**: in the remote run, session D's first task is again `TASK-001`. Reliable
+cross-session task operations need a transactional store such as DynamoDB, with conditional writes for
+status changes, idempotency and queryable state. Memory records are eventually consistent, LLM-extracted
+summaries, so they are unsuitable as a system of record.
+
+**Why not the SDK's `retrieve_memories`:** in `bedrock-agentcore` 1.26.0,
+`MemoryClient.retrieve_memories` catches every `ClientError` (including AccessDenied) and returns `[]`,
+which makes "memory down" look like "no preferences". `memory.py` calls the boto3 data plane directly so
+the two stay distinct (`unavailable` vs `empty`).
+
+**Failure modes covered:** memory not configured (`disabled`), read failure (`unavailable`, guard), write
+failure (`unavailable`, guard), empty memory (`empty`), history unavailable on restore (starts without
+history, logged), model returns an empty reply (retry), model invents task data (grounding retry).
+
+**Cost drivers:** AgentCore Memory charges for short-term event storage, long-term records stored,
+long-term extraction or processing, and retrieval calls. Runtime charges for active session compute.
+Bedrock charges Nova Lite tokens; each turn's prompt now also carries the memory block, so it is slightly
+larger. Each turn makes 2 `CreateEvent`, 1 `RetrieveMemoryRecords` and, on a cold process, 1
+`ListEvents`. Check the [AgentCore pricing page](https://aws.amazon.com/bedrock/agentcore/pricing/) for
+current rates; they were not verified for this write-up.
+
+**Privacy and security:**
+- Events hold raw conversation text for 30 days; records are kept until deleted.
+- AWS documents that the built-in strategies ignore PII when creating long-term records, but raw events
+  still contain whatever the user typed, and runtime logs record prompts. Keep the 14-day log retention
+  and use KMS for logs and Memory in production.
+- Honour deletion requests with `DeleteEvent` / `DeleteMemoryRecord` per actor.
+- Never trust a caller-supplied `actor_id` in production.
+
+**Known model limitations (Nova Lite):**
+- Some replies are clumsy. For example, it may repeat its due-date question when asked "what task did I
+  ask you to create?"
+- It sometimes needs the grounding or empty-reply retry.
+
+The guards make the outcomes safe, not elegant. `apac.amazon.nova-pro-v1:0` follows instructions better;
+switching needs only the `MODEL_ID` change.
 
 ---
 
-## 10. Cleanup (AC-14)
+## 10. AWS resources and cleanup (MEM-13)
 
-```powershell
-# 1. Remove the runtime from the project, then deploy the empty project: this deletes the stack
+| Resource | ID | Created by |
+|---|---|---|
+| AgentCore Runtime + `DEFAULT` endpoint | `ProductivityAgent_default_agent-dxt08oE1hB` | stack `AgentCore-ProductivityAgent-default` |
+| Runtime execution role + policy | `AgentCore-ProductivityAge-ApplicationRuntimeAgentRu-*` | same stack |
+| **AgentCore Memory** | `ProductivityAgent_default_TaskMemory-LqBSxx75HT` | same stack |
+| Memory service role | `AgentCore-ProductivityAge-ApplicationMemoryTaskMemo-*` | same stack |
+| Runtime log group | `/aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-dxt08oE1hB-DEFAULT` | AgentCore service |
+| CDK bootstrap (`CDKToolkit`), Transaction Search | see [docs/README-v1.md §9](docs/README-v1.md) | shared |
+
+Inventory:
+
+```bash
+agentcore status --region ap-south-1
+aws cloudformation describe-stack-resources --stack-name AgentCore-ProductivityAgent-default --region ap-south-1
+agentcore memory list --region ap-south-1
+```
+
+Removal:
+
+```bash
 agentcore remove all --yes
-agentcore deploy --yes --region ap-south-1
-aws cloudformation describe-stacks --stack-name AgentCore-ProductivityAgent-default --profile mojahid_agent --region ap-south-1   # should report "does not exist"
-
-# 2. Delete the service-created runtime log group (CloudFormation does not own it)
-aws logs delete-log-group --log-group-name /aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-udnE0mDtwm-DEFAULT --profile mojahid_agent --region ap-south-1
-
-# 3. Optional: remove the CDK bootstrap (only if no other CDK app uses this account and region)
-aws s3 rm s3://cdk-hnb659fds-assets-590183725128-ap-south-1 --recursive --profile mojahid_agent --region ap-south-1
-aws cloudformation delete-stack --stack-name CDKToolkit --profile mojahid_agent --region ap-south-1
-#   If the stack deletion leaves the bucket or ECR repository behind (retain policies), delete them:
-#   aws s3 rb s3://cdk-hnb659fds-assets-590183725128-ap-south-1
-#   aws ecr delete-repository --repository-name cdk-hnb659fds-container-assets-590183725128-ap-south-1 --force
-
-# 4. Optional: turn Transaction Search off (account-wide setting; skip if other workloads rely on it)
-aws xray update-trace-segment-destination --destination XRay --profile mojahid_agent --region ap-south-1
+agentcore deploy --yes --region ap-south-1     # deletes the stack: runtime, memory (events + records), roles
+aws cloudformation describe-stacks --stack-name AgentCore-ProductivityAgent-default --region ap-south-1   # expect "does not exist"
+agentcore memory list --region ap-south-1       # expect no ProductivityAgent memory
+MSYS_NO_PATHCONV=1 aws logs delete-log-group --region ap-south-1 \
+  --log-group-name /aws/bedrock-agentcore/runtimes/ProductivityAgent_default_agent-dxt08oE1hB-DEFAULT
 ```
 
-The runtime has no idle compute cost (you pay per active session), so
-leaving it deployed between demos costs nothing beyond log storage.
+Then the optional CDK bootstrap and Transaction Search steps from the V1 README.
 
----
-
-## 11. Known limitations and next steps
-
-- **Nova Lite quirks:** it sometimes adds a task list nobody asked for after a
-  create or complete. These lists match the tool results seen so far, but
-  were not freshly fetched. Two mitigations are in place (instruction rules,
-  plus a `note` in write results that tells it to call `list_tasks`), and a
-  code-level guard covers due dates. For stronger instruction-following,
-  switch `MODEL_ID` to `apac.amazon.nova-pro-v1:0`; only the env var changes.
-- **Persistence:** in-memory only, so tasks are lost when the session ends.
-  Next step: AgentCore Memory (short-term events for history, long-term for
-  preferences), with tasks in DynamoDB through an ADK tool.
-- **External tools:** expose task APIs through AgentCore Gateway (MCP) instead of
-  in-process functions.
-- **AuthN/Z:** inbound access is currently IAM SigV4. For end users, configure a
-  JWT authorizer (Cognito / Entra ID) and pass the user id into the ADK session;
-  use AgentCore Identity for outbound OAuth.
-- **Production hardening:** scope `bedrock:InvokeModel` to the Nova Lite
-  inference profile, use VPC network mode, encrypt the log group with KMS,
-  add CloudWatch alarms on error rate and latency, and evaluate with AgentCore
-  Evaluations.
-- **Scaling:** AgentCore Runtime scales per session automatically. The
-  in-process state is safe because each session has its own microVM.
+**Retention implications:**
+- Deleting the Memory resource deletes all its events and long-term records; that cannot be undone.
+- While it exists, events expire after 30 days but **long-term records do not**. Remove individual
+  users with `DeleteMemoryRecord` / `DeleteEvent`.
+- Runtime logs keep prompts for their retention period, even after the memory is deleted.

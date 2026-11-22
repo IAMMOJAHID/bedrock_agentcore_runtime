@@ -6,20 +6,25 @@ import pytest
 import tools
 
 
-def ctx(session_id: str, user_text: str = "due in three days"):
-    """Minimal stand-in for ADK's ToolContext (session.id, user_content, session.events)."""
+def ctx(session_id: str, user_text: str = "due in three days", actor_id: str | None = None):
+    """Minimal stand-in for ADK's ToolContext (session.id/user_id, user_content, session.events)."""
     content = SimpleNamespace(parts=[SimpleNamespace(text=user_text)])
-    return SimpleNamespace(session=SimpleNamespace(id=session_id, events=[]), user_content=content)
+    session = SimpleNamespace(id=session_id, user_id=actor_id or f"actor-{session_id}", events=[])
+    return SimpleNamespace(session=session, user_content=content)
 
 
 FUTURE = (date.today() + timedelta(days=3)).isoformat()
 
 
-def test_tools_are_session_scoped():
-    a, b = ctx("session-a"), ctx("session-b")
-    assert tools.create_task("Task in A", FUTURE, "three days", a)["task"]["task_id"] == "TASK-001"
-    assert tools.list_tasks(b)["count"] == 0
-    assert tools.list_tasks(a)["count"] == 1
+def test_tasks_are_actor_scoped():
+    a1 = ctx("s-a1", actor_id="USER-A")
+    a2 = ctx("s-a2", actor_id="USER-A")  # same actor, another session
+    b = ctx("s-b1", actor_id="USER-B")
+    assert tools.create_task("Task of A", FUTURE, "three days", a1)["task"]["task_id"] == "TASK-001"
+    assert tools.list_tasks(a2)["count"] == 1  # same actor sees own tasks across sessions (same process)
+    assert tools.list_tasks(b)["count"] == 0   # another actor never does
+    tools.reset_actor_store("USER-A")           # simulated restart: in-process tasks are gone
+    assert tools.list_tasks(a1)["count"] == 0
 
 
 def test_validation_errors_returned_as_data():

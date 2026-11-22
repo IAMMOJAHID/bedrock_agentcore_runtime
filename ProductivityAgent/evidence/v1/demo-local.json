@@ -8,7 +8,7 @@
     "passed": true,
     "check": "create_task succeeded",
     "result": {
-      "response": "The task \"Complete the architecture review\" has been created and is due by Friday, 2026-11-27. Here is the task list:\n\n- **TASK-001**: Complete the architecture review, due by 2026-11-27.",
+      "response": "I have created the task \"Complete the architecture review\" due by Friday, 2026-11-27. Here is your current pending task:\n\n- **ID:** TASK-001\n- **Title:** Complete the architecture review\n- **Due Date:** 2026-11-27\n- **Status:** Pending",
       "tool_calls": [
         {
           "tool": "create_task",
@@ -25,7 +25,7 @@
               "title": "Complete the architecture review",
               "due_date": "2026-11-27",
               "status": "pending",
-              "created_at": "2026-11-20T07:51:04+00:00",
+              "created_at": "2026-11-20T12:50:35+00:00",
               "completed_at": null
             },
             "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."
@@ -46,7 +46,7 @@
                 "title": "Complete the architecture review",
                 "due_date": "2026-11-27",
                 "status": "pending",
-                "created_at": "2026-11-20T07:51:04+00:00",
+                "created_at": "2026-11-20T12:50:35+00:00",
                 "completed_at": null
               }
             ]
@@ -55,9 +55,9 @@
       ],
       "reasoning": [
         "The user has provided a title for the task but has not provided a due date. I need to convert \"Friday\" to an absolute date before creating the task.",
-        "The task to complete the architecture review by Friday has been successfully created. I will now list all pending tasks to show the user their current to-do list."
+        "The task to complete the architecture review by Friday has been created successfully. I will now list all pending tasks to show the user the newly created task."
       ],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -70,7 +70,7 @@
     "passed": true,
     "check": "list_tasks succeeded",
     "result": {
-      "response": "Here are all your pending tasks:\n\n- **TASK-001**: Complete the architecture review, due by 2026-11-27.",
+      "response": "Here are all your pending tasks:\n\n- **ID:** TASK-001\n- **Title:** Complete the architecture review\n- **Due Date:** 2026-11-27\n- **Status:** Pending",
       "tool_calls": [
         {
           "tool": "list_tasks",
@@ -87,7 +87,7 @@
                 "title": "Complete the architecture review",
                 "due_date": "2026-11-27",
                 "status": "pending",
-                "created_at": "2026-11-20T07:51:04+00:00",
+                "created_at": "2026-11-20T12:50:35+00:00",
                 "completed_at": null
               }
             ]
@@ -95,7 +95,7 @@
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -108,7 +108,7 @@
     "passed": true,
     "check": "create_task AND list_tasks in one turn",
     "result": {
-      "response": "The task \"Review the AgentCore architecture\" has been created and is due by next Monday, 2026-11-23. Here are all your pending tasks:\n\n- **TASK-002**: Review the AgentCore architecture, due by 2026-11-23.\n- **TASK-001**: Complete the architecture review, due by 2026-11-27.",
+      "response": "I have created the task \"Review the AgentCore architecture\" due by next Monday, 2026-11-23. Here are all your pending tasks:\n\n- **ID:** TASK-001\n- **Title:** Complete the architecture review\n- **Due Date:** 2026-11-27\n- **Status:** Pending\n\n- **ID:** TASK-002\n- **Title:** Review the AgentCore architecture\n- **Due Date:** 2026-11-23\n- **Status:** Pending",
       "tool_calls": [
         {
           "tool": "create_task",
@@ -125,7 +125,7 @@
               "title": "Review the AgentCore architecture",
               "due_date": "2026-11-23",
               "status": "pending",
-              "created_at": "2026-11-20T07:51:12+00:00",
+              "created_at": "2026-11-20T12:50:42+00:00",
               "completed_at": null
             },
             "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."
@@ -146,7 +146,7 @@
                 "title": "Review the AgentCore architecture",
                 "due_date": "2026-11-23",
                 "status": "pending",
-                "created_at": "2026-11-20T07:51:12+00:00",
+                "created_at": "2026-11-20T12:50:42+00:00",
                 "completed_at": null
               },
               {
@@ -154,7 +154,7 @@
                 "title": "Complete the architecture review",
                 "due_date": "2026-11-27",
                 "status": "pending",
-                "created_at": "2026-11-20T07:51:04+00:00",
+                "created_at": "2026-11-20T12:50:35+00:00",
                 "completed_at": null
               }
             ]
@@ -162,7 +162,7 @@
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -175,7 +175,7 @@
     "passed": true,
     "check": "complete_task succeeded",
     "result": {
-      "response": "Task TASK-001 has been marked as completed. Here are all your pending tasks:\n\n- **TASK-002**: Review the AgentCore architecture, due by 2026-11-23.",
+      "response": "I have marked task TASK-001 as completed. Here are all your pending tasks:\n\n- **ID:** TASK-002\n- **Title:** Review the AgentCore architecture\n- **Due Date:** 2026-11-23\n- **Status:** Pending",
       "tool_calls": [
         {
           "tool": "complete_task",
@@ -191,15 +191,15 @@
               "title": "Complete the architecture review",
               "due_date": "2026-11-27",
               "status": "completed",
-              "created_at": "2026-11-20T07:51:04+00:00",
-              "completed_at": "2026-11-20T07:51:15+00:00"
+              "created_at": "2026-11-20T12:50:35+00:00",
+              "completed_at": "2026-11-20T12:50:45+00:00"
             },
             "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."
           }
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -212,7 +212,7 @@
     "passed": true,
     "check": "complete_task returned not_found",
     "result": {
-      "response": "I couldn't find a task with the ID TASK-999. Please check the task ID and try again.",
+      "response": "I couldn't complete task TASK-999 because it does not exist. Please check the task ID and try again.",
       "tool_calls": [
         {
           "tool": "complete_task",
@@ -227,7 +227,7 @@
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -240,12 +240,12 @@
     "passed": true,
     "check": "no task created without a due date",
     "result": {
-      "response": "",
+      "response": "I need the due date for the task \"call the vendor\" to proceed. Please provide the due date.",
       "tool_calls": [],
       "reasoning": [
-        "The user has asked to create a task but has not provided a title or a due date. I need to ask for the missing details."
+        "The user has requested to create a task to call the vendor, but has not provided a due date. I need to ask the user for the due date before creating the task."
       ],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -258,7 +258,7 @@
     "passed": true,
     "check": "invalid date rejected",
     "result": {
-      "response": "I'm sorry, but I can't create a task with the due date \"2026-02-30\" because it is not a valid date. February only has 28 or 29 days. Please provide a valid date. Also, for the task \"Call the vendor\", you need to provide a due date.",
+      "response": "I couldn't create the task \"Update the roadmap\" because the due date \"2026-02-30\" is not valid. February only has 28 or 29 days depending on the year. Please provide a valid date in the format YYYY-MM-DD.",
       "tool_calls": [
         {
           "tool": "create_task",
@@ -272,19 +272,10 @@
             "error_type": "validation_error",
             "message": "'2026-02-30' is not a valid date. Use the format YYYY-MM-DD, e.g. 2026-11-20."
           }
-        },
-        {
-          "tool": "create_task",
-          "args": {
-            "title": "Call the vendor"
-          },
-          "result": {
-            "error": "Invoking `create_task()` failed as the following mandatory input parameters are not present:\ndue_date\nuser_due_date_phrase\nYou could retry calling this tool, but it is IMPORTANT for you to provide all the mandatory parameters."
-          }
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -297,7 +288,7 @@
     "passed": true,
     "check": "resolved 'the AgentCore task' to TASK-002 from session context",
     "result": {
-      "response": "Task TASK-002 has been marked as completed. Here are all your tasks, including completed ones:\n\n- **TASK-002**: Review the AgentCore architecture, due by 2026-11-23, completed on 2026-11-20.\n- **TASK-001**: Complete the architecture review, due by 2026-11-27, completed on 2026-11-20.",
+      "response": "I have marked task TASK-002 as completed. Here are all your tasks, including completed ones:\n\n- **ID:** TASK-002\n- **Title:** Review the AgentCore architecture\n- **Due Date:** 2026-11-23\n- **Status:** Completed\n\n- **ID:** TASK-001\n- **Title:** Complete the architecture review\n- **Due Date:** 2026-11-27\n- **Status:** Completed",
       "tool_calls": [
         {
           "tool": "complete_task",
@@ -313,8 +304,8 @@
               "title": "Review the AgentCore architecture",
               "due_date": "2026-11-23",
               "status": "completed",
-              "created_at": "2026-11-20T07:51:12+00:00",
-              "completed_at": "2026-11-20T07:51:28+00:00"
+              "created_at": "2026-11-20T12:50:42+00:00",
+              "completed_at": "2026-11-20T12:50:56+00:00"
             },
             "note": "The task list has changed. If the user's request also asks to see, show or list tasks, call list_tasks now - do not list tasks from memory."
           }
@@ -334,23 +325,23 @@
                 "title": "Review the AgentCore architecture",
                 "due_date": "2026-11-23",
                 "status": "completed",
-                "created_at": "2026-11-20T07:51:12+00:00",
-                "completed_at": "2026-11-20T07:51:28+00:00"
+                "created_at": "2026-11-20T12:50:42+00:00",
+                "completed_at": "2026-11-20T12:50:56+00:00"
               },
               {
                 "task_id": "TASK-001",
                 "title": "Complete the architecture review",
                 "due_date": "2026-11-27",
                 "status": "completed",
-                "created_at": "2026-11-20T07:51:04+00:00",
-                "completed_at": "2026-11-20T07:51:15+00:00"
+                "created_at": "2026-11-20T12:50:35+00:00",
+                "completed_at": "2026-11-20T12:50:45+00:00"
               }
             ]
           }
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -366,7 +357,7 @@
     "passed": true,
     "check": "list_tasks failed and agent reported it",
     "result": {
-      "response": "I'm sorry, but I'm currently unable to show your pending tasks due to a temporary issue with the task backend. Please try again later.",
+      "response": "I'm sorry, but I couldn't show your pending tasks because there was a failure in the list_tasks operation. Please try again later.",
       "tool_calls": [
         {
           "tool": "list_tasks",
@@ -381,7 +372,7 @@
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -397,7 +388,7 @@
     "passed": true,
     "check": "create_task failed, no false success claim",
     "result": {
-      "response": "I'm sorry, but I'm currently unable to create a new task due to a temporary issue with the task backend. Please try again later.",
+      "response": "I'm sorry, but I couldn't create the task \"Prepare the demo slides\" because there was a failure in the create_task operation. Please try again later.",
       "tool_calls": [
         {
           "tool": "create_task",
@@ -414,7 +405,7 @@
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   },
@@ -444,7 +435,7 @@
         }
       ],
       "reasoning": [],
-      "session_id": "demo-local-e87ce955-622c-459e-a691-6e5ba11cd385",
+      "session_id": "demo-local-c93d24d5-bafe-4816-960a-300f2543ed0f",
       "model": "apac.amazon.nova-lite-v1:0"
     }
   }

@@ -41,14 +41,27 @@ class SimulatedToolFailure(RuntimeError):
 
 
 # --------------------------------------------------------------------------- #
-# Session-scoped state helpers
+# Actor/session-scoped state helpers
 # --------------------------------------------------------------------------- #
-def get_store(session_id: str) -> TaskStore:
+def get_store(actor_id: str) -> TaskStore:
+    """Task store for one actor (user). In-process only: NOT persistent.
+
+    V2 keys tasks by actor so "my tasks" works across a user's sessions while the
+    same process is alive (local dev). On AgentCore Runtime each session runs in
+    its own microVM, so tasks still do not survive across sessions or restarts.
+    AgentCore Memory is deliberately NOT used as a task database.
+    """
     with _registry_lock:
-        store = _stores.get(session_id)
+        store = _stores.get(actor_id)
         if store is None:
-            store = _stores[session_id] = TaskStore()
+            store = _stores[actor_id] = TaskStore()
         return store
+
+
+def reset_actor_store(actor_id: str) -> None:
+    """Drop an actor's in-process tasks (used to simulate a process restart)."""
+    with _registry_lock:
+        _stores.pop(actor_id, None)
 
 
 def set_simulated_failures(session_id: str, tool_names: list[str] | set[str] | None) -> None:
@@ -63,6 +76,10 @@ def set_simulated_failures(session_id: str, tool_names: list[str] | set[str] | N
 
 def _session_id(tool_context: ToolContext) -> str:
     return tool_context.session.id
+
+
+def _actor_id(tool_context: ToolContext) -> str:
+    return tool_context.session.user_id
 
 
 def _maybe_fail(tool_name: str, session_id: str) -> None:
@@ -138,7 +155,7 @@ def create_task(
             ),
         }
     try:
-        task = get_store(sid).create(title, due_date)
+        task = get_store(_actor_id(tool_context)).create(title, due_date)
     except TaskError as err:
         logger.info("create_task rejected: %s", err)
         return _error(err)
@@ -165,7 +182,7 @@ def list_tasks(tool_context: ToolContext, status: str = "pending") -> dict[str, 
     sid = _session_id(tool_context)
     _maybe_fail("list_tasks", sid)
     try:
-        tasks = get_store(sid).list(status)
+        tasks = get_store(_actor_id(tool_context)).list(status)
     except TaskError as err:
         return _error(err)
     return {
@@ -189,7 +206,7 @@ def complete_task(task_id: str, tool_context: ToolContext) -> dict[str, Any]:
     sid = _session_id(tool_context)
     _maybe_fail("complete_task", sid)
     try:
-        task, changed = get_store(sid).complete(task_id)
+        task, changed = get_store(_actor_id(tool_context)).complete(task_id)
     except TaskError as err:
         logger.info("complete_task rejected: %s", err)
         return _error(err)
